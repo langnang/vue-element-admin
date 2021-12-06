@@ -2,23 +2,23 @@ import request from '@/utils/request'
 
 export function login(data) {
   return request({
-    url: '/vue-element-admin/user/login',
-    method: 'post',
+    url: process.env.VUE_APP_PHP_API + '/user/login',
+    method: 'POST',
     data
   })
 }
 
-export function getInfo(token) {
+export function getInfo(data = {}) {
   return request({
-    url: '/vue-element-admin/user/info',
-    method: 'get',
-    params: { token }
+    url: process.env.VUE_APP_PHP_API + '/user/info',
+    method: 'POST',
+    data
   })
 }
 
 export function logout() {
   return request({
     url: '/vue-element-admin/user/logout',
-    method: 'post'
+    method: 'POST'
   })
 }
