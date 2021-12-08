@@ -21,7 +21,6 @@ service.interceptors.request.use(
       // please modify it according to the actual situation
       config.headers['Authorization'] = 'Bearer ' + getToken()
     }
-    console.log(config)
     return config
   },
   error => {
@@ -46,6 +45,7 @@ service.interceptors.response.use(
   response => {
     const res = response.data
 
+    console.log(res)
     // if the custom code is not 20000, it is judged as an error.
     if (res.status !== 200) {
       Message({
@@ -69,7 +69,7 @@ service.interceptors.response.use(
       }
       return Promise.reject(new Error(res.statusText || 'Error'))
     } else {
-      return res
+      return res.data
     }
   },
   error => {

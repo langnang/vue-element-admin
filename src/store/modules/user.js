@@ -35,7 +35,7 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ name: username.trim(), password: CryptoJS.MD5(password).toString() }).then(response => {
-        const { data } = response
+        const data = response
         commit('SET_TOKEN', data.token)
         setToken(data.token)
         resolve()
@@ -49,7 +49,7 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo().then(response => {
-        const { data } = response
+        const data = response
 
         if (!data) {
           reject('Verification failed, please Login again.')
@@ -58,6 +58,7 @@ const actions = {
 
         const { roles, name, avatar, introduction } = data
 
+        console.log(data)
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
           reject('getInfo: roles must be a non-null array!')
