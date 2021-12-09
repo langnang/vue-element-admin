@@ -5,7 +5,9 @@
         <el-input v-model="form.title" placeholder="标题" />
       </el-form-item>
       <el-form-item>
-        <el-input v-model="form.keywords" placeholder="关键字" />
+        <el-select v-model="form.keywords" placeholder="关键字" clearable filterable remote allow-create :remote-method="getKeywordList">
+          <el-option v-for="item in keywordOptions" :key="item" :label="item" :value="item" />
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-input v-model="form.description" placeholder="描述" />
@@ -118,7 +120,7 @@
 <script>
 import { getToken } from "@/utils/auth";
 import { saveAs } from "file-saver";
-import { crawler_website_info, insert_website, delete_website, update_website, select_website_list, upload_website } from "@/api/website";
+import { crawler_website_info, insert_website, delete_website, update_website, select_website_list, upload_website, select_website_keywords } from "@/api/website";
 const originItem = {
   url: "",
   title: "",
@@ -135,6 +137,7 @@ export default {
       token: getToken(),
       upload_website,
       form: Object.assign({}, originItem),
+      keywordOptions: [],
       table: {
         loading: false,
         border: true,
@@ -321,6 +324,15 @@ export default {
         .finally(() => {
           this.table.loading = false;
         });
+    },
+    getKeywordList(str) {
+      if (str === "") {
+        this.keywordOptions = [];
+        return;
+      }
+      select_website_keywords(str).then((res) => {
+        this.keywordOptions = res.rows;
+      });
     },
     handleCurrentChange(val) {
       this.pagination.page = val;

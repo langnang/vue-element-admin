@@ -40,3 +40,11 @@ export function select_website_list(data) {
 }
 
 export const upload_website = process.env.VUE_APP_PHP_API + '/website/upload';
+
+export const select_website_keywords = (keyword = '') => request({
+  url: process.env.VUE_APP_PHP_API + '/website/keywords',
+  method: 'POST',
+  data: {
+    keyword
+  }
+})
