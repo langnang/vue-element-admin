@@ -35,15 +35,17 @@
           <el-upload
             :action="upload_website"
             name="website"
+            accept="application/json"
             :headers="{
               Authorization: 'Bearer ' + token,
             }"
+            :on-success="handleSelect"
           >
             <el-button circle size="mini" type="primary" icon="el-icon-upload2" />
           </el-upload>
         </el-tooltip>
         <el-tooltip effect="dark" content="下载" placement="bottom">
-          <el-button circle size="mini" type="primary" icon="el-icon-download" @click="handleInsert" />
+          <el-button circle size="mini" type="primary" icon="el-icon-download" @click="handleDownload" />
         </el-tooltip>
       </el-form-item>
     </el-form>
@@ -88,6 +90,7 @@
 </template>
 <script>
 import { getToken } from "@/utils/auth";
+import { saveAs } from "file-saver";
 import { crawler_website_info, insert_website, delete_website, update_website, select_website_list, upload_website } from "@/api/website";
 const originItem = {
   url: "",
@@ -95,7 +98,6 @@ const originItem = {
   keywords: "",
   description: "",
 };
-console.log(process);
 export default {
   data() {
     return {
@@ -154,6 +156,40 @@ export default {
     this.getList();
   },
   methods: {
+    handleDownload() {
+      if (this.table.multipleSelection.length === 0) {
+        this.$confirm("此操作将下载所有数据, 是否继续?", "确认信息", {
+          confirmButtonText: "确认",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+          .then(() => {
+            return select_website_list({
+              size: 9999999,
+            });
+          })
+          .then((res) => {
+            const str = new Blob([JSON.stringify(res.rows)], { type: "text/plain;charset=ytf-8" });
+            saveAs(str, `website.${new Date().getTime()}.json`);
+          })
+          .catch(() => {
+            this.$message.info("操作取消");
+          });
+      } else {
+        this.$confirm("此操作将下载所选数据, 是否继续?", "确认信息", {
+          confirmButtonText: "确认",
+          cancelButtonText: "取消",
+          type: "warning",
+        })
+          .then(() => {
+            const str = new Blob([JSON.stringify(this.table.multipleSelection)], { type: "text/plain;charset=ytf-8" });
+            saveAs(str, `website.${new Date().getTime()}.json`);
+          })
+          .catch(() => {
+            this.$message.info("操作取消");
+          });
+      }
+    },
     handleCrawlerList() {
       Promise.all(
         this.table.multipleSelection.map((v) => {
@@ -181,7 +217,6 @@ export default {
         url: this.dialog.form.url,
       })
         .then((res) => {
-          console.log(res);
           this.dialog.form = Object.assign(this.dialog.form, res);
         })
         .finally(() => {
