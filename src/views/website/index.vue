@@ -1,10 +1,6 @@
-/** * @name 网址管理 */
 <template>
   <div>
     <el-form ref="form" :model="form" :inline="true" size="small">
-      <el-form-item>
-        <el-input v-model="form.url" placeholder="地址" />
-      </el-form-item>
       <el-form-item>
         <el-input v-model="form.title" placeholder="标题" />
       </el-form-item>
@@ -14,6 +10,20 @@
       <el-form-item>
         <el-input v-model="form.description" placeholder="描述" />
       </el-form-item>
+      <el-form-item style="width: 100px">
+        <el-select v-model="form.type" placeholder="类别" clearable>
+          <el-option value="post" label="正文" />
+          <el-option value="draft" label="草稿" />
+        </el-select>
+      </el-form-item>
+      <el-form-item style="width: 100px">
+        <el-select v-model="form.status" placeholder="状态" clearable>
+          <el-option value="public" label="公共" />
+          <el-option value="protected" label="保护" />
+          <el-option value="private" label="私有" />
+        </el-select>
+      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" @click="handleSelect">查询</el-button>
         <el-button type="info" @click="handleReset">重置</el-button>
@@ -39,7 +49,17 @@
             :headers="{
               Authorization: 'Bearer ' + token,
             }"
-            :on-success="handleSelect"
+            :on-progress="
+              () => {
+                table.loading = true;
+              }
+            "
+            :on-success="
+              () => {
+                $message.success('上传成功');
+                handleSelect();
+              }
+            "
           >
             <el-button circle size="mini" type="primary" icon="el-icon-upload2" />
           </el-upload>
@@ -59,6 +79,9 @@
       </el-table-column>
       <el-table-column align="center" show-overflow-tooltip prop="keywords" label="关键字" width="350" />
       <el-table-column align="center" show-overflow-tooltip prop="description" label="描述" />
+      <el-table-column align="center" show-overflow-tooltip prop="order" label="排序" width="80" />
+      <el-table-column align="center" show-overflow-tooltip prop="type" label="类别" width="80" />
+      <el-table-column align="center" show-overflow-tooltip prop="status" label="状态" width="80" />
       <el-table-column align="center" show-overflow-tooltip prop="create_time" label="创建时间" width="140" />
       <el-table-column align="center" show-overflow-tooltip prop="update_time" label="更新时间" width="140" />
       <template v-slot:empty>
@@ -101,7 +124,11 @@ const originItem = {
   title: "",
   keywords: "",
   description: "",
+  status: "",
+  type: "",
 };
+const typeOptions = {};
+const statusOptions = {};
 export default {
   data() {
     return {
@@ -157,7 +184,7 @@ export default {
     };
   },
   created() {
-    this.getList();
+    this.handleSelect();
   },
   methods: {
     handleDownload() {
@@ -195,6 +222,7 @@ export default {
       }
     },
     handleCrawlerList() {
+      this.table.loading = true;
       Promise.all(
         this.table.multipleSelection.map((v) => {
           return crawler_website_info({
@@ -211,7 +239,10 @@ export default {
         })
         .then((res) => {
           this.$message.success("更新成功!");
-          this.getList();
+          this.handleSelect();
+        })
+        .finally(() => {
+          this.table.loading = false;
         });
     },
     //
@@ -273,7 +304,7 @@ export default {
     },
     handleReset() {
       this.form = Object.assign({}, originItem);
-      this.getList();
+      this.handleSelect();
     },
     getList() {
       this.table.loading = true;
