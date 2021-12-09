@@ -39,3 +39,4 @@ export function select_website_list(data) {
   })
 }
 
+export const upload_website = process.env.VUE_APP_PHP_API + '/website/upload';

@@ -6,6 +6,9 @@
         <el-input v-model="form.url" placeholder="地址" />
       </el-form-item>
       <el-form-item>
+        <el-input v-model="form.title" placeholder="标题" />
+      </el-form-item>
+      <el-form-item>
         <el-input v-model="form.keywords" placeholder="关键字" />
       </el-form-item>
       <el-form-item>
@@ -16,20 +19,48 @@
         <el-button type="info" @click="handleReset">重置</el-button>
       </el-form-item>
       <el-form-item style="float: right; margin-right: 0">
-        <el-button type="primary" circle icon="el-icon-plus" @click="handleInsert" />
-        <el-button type="warning" circle icon="el-icon-edit" :disabled="table.multipleSelection.length !== 1" @click="handleUpdate" />
-        <el-button type="danger" circle icon="el-icon-delete" :disabled="table.multipleSelection.length === 0" @click="handleDelete" />
+        <el-tooltip effect="dark" content="强制更新" placement="bottom">
+          <el-button circle size="mini" type="primary" icon="el-icon-refresh" :disabled="table.multipleSelection.length === 0" @click="handleCrawlerList" />
+        </el-tooltip>
+        <el-tooltip effect="dark" content="新增" placement="bottom">
+          <el-button circle size="mini" type="primary" icon="el-icon-plus" @click="handleInsert" />
+        </el-tooltip>
+        <el-tooltip effect="dark" content="编辑" placement="bottom">
+          <el-button circle size="mini" type="warning" icon="el-icon-edit" :disabled="table.multipleSelection.length !== 1" @click="handleUpdate" />
+        </el-tooltip>
+        <el-tooltip effect="dark" content="删除" placement="bottom">
+          <el-button circle size="mini" type="danger" icon="el-icon-delete" :disabled="table.multipleSelection.length === 0" @click="handleDelete" />
+        </el-tooltip>
+        <el-tooltip effect="dark" content="上传" placement="bottom" style="display: inline-block; margin-left: 10px; margin-right: 10px">
+          <el-upload
+            :action="upload_website"
+            name="website"
+            :headers="{
+              Authorization: 'Bearer ' + token,
+            }"
+          >
+            <el-button circle size="mini" type="primary" icon="el-icon-upload2" />
+          </el-upload>
+        </el-tooltip>
+        <el-tooltip effect="dark" content="下载" placement="bottom">
+          <el-button circle size="mini" type="primary" icon="el-icon-download" @click="handleInsert" />
+        </el-tooltip>
       </el-form-item>
     </el-form>
 
-    <el-table v-loading="table.loading" border :data="table.data" @selection-change="handleSelectionChange">
+    <el-table v-loading="table.loading" border size="mini" :data="table.data" @selection-change="handleSelectionChange">
       <el-table-column align="center" show-overflow-tooltip type="selection" width="45" />
       <el-table-column align="center" show-overflow-tooltip prop="title" label="标题" width="200" />
       <el-table-column align="center" show-overflow-tooltip prop="keywords" label="关键字" width="350" />
       <el-table-column align="center" show-overflow-tooltip prop="description" label="描述" />
+      <el-table-column align="center" show-overflow-tooltip prop="create_time" label="创建时间" width="140" />
+      <el-table-column align="center" show-overflow-tooltip prop="update_time" label="更新时间" width="140" />
+      <template v-slot:empty>
+        <el-empty />
+      </template>
     </el-table>
 
-    <el-pagination layout="total, sizes, prev, pager, next, jumper" :page-sizes="[10, 20, 50, 100]" :total="pagination.total" :current-page="pagination.page" :page-size="pagination.size" @current-change="handleCurrentChange" @size-change="handleSizeChange" />
+    <el-pagination v-if="table.data.length !== 0" layout="total, sizes, prev, pager, next, jumper" :page-sizes="[10, 20, 50, 100]" :total="pagination.total" :current-page="pagination.page" :page-size="pagination.size" @current-change="handleCurrentChange" @size-change="handleSizeChange" />
 
     <el-dialog :title="dialog.title" :visible.sync="dialog.visible">
       <el-form ref="dialog" v-loading="dialog.loading" :model="dialog.data" label-width="80px">
@@ -37,6 +68,9 @@
           <el-input v-model="dialog.form.url" placeholder="地址">
             <el-button slot="append" icon="el-icon-refresh" @click="handleCrawlerInfo" />
           </el-input>
+        </el-form-item>
+        <el-form-item label="标题">
+          <el-input v-model="dialog.form.title" placeholder="标题" />
         </el-form-item>
         <el-form-item label="关键字">
           <el-input v-model="dialog.form.keywords" placeholder="关键字" />
@@ -53,15 +87,20 @@
   </div>
 </template>
 <script>
-import { crawler_website_info, insert_website, delete_website, update_website, select_website_list } from "@/api/website";
+import { getToken } from "@/utils/auth";
+import { crawler_website_info, insert_website, delete_website, update_website, select_website_list, upload_website } from "@/api/website";
 const originItem = {
   url: "",
+  title: "",
   keywords: "",
   description: "",
 };
+console.log(process);
 export default {
   data() {
     return {
+      token: getToken(),
+      upload_website,
       form: Object.assign({}, originItem),
       table: {
         loading: false,
@@ -100,7 +139,7 @@ export default {
       pagination: {
         page: 1,
         size: 10,
-        total: 400,
+        total: 0,
       },
       dialog: {
         target: "", //insert update
@@ -115,6 +154,26 @@ export default {
     this.getList();
   },
   methods: {
+    handleCrawlerList() {
+      Promise.all(
+        this.table.multipleSelection.map((v) => {
+          return crawler_website_info({
+            url: v.url,
+          });
+        })
+      )
+        .then((res) => {
+          return Promise.all(
+            res.map((v, i) => {
+              return update_website(Object.assign({}, this.table.multipleSelection[i], v));
+            })
+          );
+        })
+        .then((res) => {
+          this.$message.success("更新成功!");
+          this.getList();
+        });
+    },
     //
     handleCrawlerInfo() {
       this.dialog.loading = true;
@@ -219,3 +278,8 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+::v-deep .el-upload-list {
+  display: none;
+}
+</style>
