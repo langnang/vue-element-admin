@@ -166,6 +166,18 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/script',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/script/index'),
+        name: 'Script',
+        meta: { title: 'Script', icon: 'icon', noCache: true }
+      }
+    ]
+  },
+  {
     path: '/permission',
     component: Layout,
     redirect: '/permission/page',
