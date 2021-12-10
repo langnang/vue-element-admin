@@ -100,6 +100,9 @@
         <el-form-item label="描述">
           <el-input v-model="dialog.form.description" type="textarea" placeholder="描述" />
         </el-form-item>
+        <el-form-item label-width="0">
+          <MonacoEditor v-model="dialog.form.content" />
+        </el-form-item>
       </el-form>
       <span slot="footer">
         <el-button @click="handleCloseDialog">取 消</el-button>
@@ -112,17 +115,23 @@
 import { getToken } from "@/utils/auth";
 import { saveAs } from "file-saver";
 import { crawler_script_info, insert_script, delete_script, update_script, select_script_list, upload_script, select_script_keywords } from "@/api/script";
+import MonacoEditor from "@/components/MonacoEditor";
 const originItem = {
   url: "",
   title: "",
   keywords: "",
   description: "",
+  language: "",
+  content: "",
   status: "",
   type: "",
 };
 const typeOptions = {};
 const statusOptions = {};
 export default {
+  components: {
+    MonacoEditor,
+  },
   data() {
     return {
       token: getToken(),
