@@ -9,12 +9,12 @@
       </el-form-item>
       <el-form-item style="width: 100px">
         <el-select v-model="form.type" placeholder="类别" clearable>
-          <el-option v-for="(v, k) in options.typeOptions" :key="k" :value="k" :label="v" />
+          <el-option v-for="(v, k) in options.type_options" :key="k" :value="k" :label="v" />
         </el-select>
       </el-form-item>
       <el-form-item style="width: 100px">
         <el-select v-model="form.status" placeholder="状态" clearable>
-          <el-option v-for="(v, k) in options.statusOptions" :key="k" :value="k" :label="v" />
+          <el-option v-for="(v, k) in options.status_options" :key="k" :value="k" :label="v" />
         </el-select>
       </el-form-item>
 
@@ -25,6 +25,12 @@
       <el-form-item style="float: right; margin-right: 0">
         <el-tooltip effect="dark" content="新增" placement="bottom">
           <el-button circle size="mini" type="primary" icon="el-icon-plus" @click="handleInsert" />
+        </el-tooltip>
+        <el-tooltip effect="dark" content="启动" placement="bottom">
+          <el-button circle size="mini" type="primary" icon="el-icon-video-play" :disabled="table.multipleSelection.length === 0" @click="handleUpdateParams({ status: 'queue' })" />
+        </el-tooltip>
+        <el-tooltip effect="dark" content="停止" placement="bottom">
+          <el-button circle size="mini" type="primary" icon="el-icon-video-pause" :disabled="table.multipleSelection.length === 0" @click="handleUpdateParams({ status: 'stop' })" />
         </el-tooltip>
         <el-tooltip effect="dark" content="删除" placement="bottom">
           <el-button circle size="mini" type="danger" icon="el-icon-delete" :disabled="table.multipleSelection.length === 0" @click="handleDelete" />
@@ -64,8 +70,16 @@
       <el-table-column align="center" show-overflow-tooltip prop="domains" label="域名" width="200" />
       <el-table-column align="center" show-overflow-tooltip prop="content_url_regexes" label="内容页URL规则" />
       <el-table-column align="center" show-overflow-tooltip prop="order" label="排序" width="80" />
-      <el-table-column align="center" show-overflow-tooltip prop="type" label="类别" width="80" />
-      <el-table-column align="center" show-overflow-tooltip prop="status" label="状态" width="80" />
+      <el-table-column align="center" show-overflow-tooltip prop="type" label="类别" width="80">
+        <template v-slot="{ row }">
+          {{ options.type_options[row.type] || "" }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" show-overflow-tooltip prop="status" label="状态" width="80">
+        <template v-slot="{ row }">
+          {{ options.status_options[row.status] || "" }}
+        </template>
+      </el-table-column>
       <el-table-column align="center" show-overflow-tooltip prop="create_time" label="创建时间" width="140" />
       <el-table-column align="center" show-overflow-tooltip prop="update_time" label="更新时间" width="140" />
       <template v-slot:empty>
@@ -81,16 +95,32 @@
           <el-input v-model="dialog.form.title" />
         </el-form-item>
         <el-form-item prop="domains" label="域名">
-          <el-select v-model="dialog.form.domains" clearable multiple filterable allow-create />
+          <el-tag v-for="(url, index) in dialog.form.domains" :key="url" closable :disable-transitions="false" @close="handleCloseTag('domains', index)">
+            {{ url }}
+          </el-tag>
+          <el-input v-if="dialog.tagInput.domains.visible" v-model="dialog.tagInput.domains.value" size="mini" style="width: auto" @keyup.enter.native="handleTagInputConfirm('domains')" @blur="handleTagInputConfirm('domains')" />
+          <el-button v-else size="mini" @click="dialog.tagInput.domains.visible = true">+ New</el-button>
         </el-form-item>
         <el-form-item prop="scan_urls" label="入口链接">
-          <el-select v-model="dialog.form.scan_urls" clearable multiple filterable allow-create />
+          <el-tag v-for="(url, index) in dialog.form.scan_urls" :key="url" closable :disable-transitions="false" @close="handleCloseTag('scan_urls', index)">
+            {{ url }}
+          </el-tag>
+          <el-input v-if="dialog.tagInput.scan_urls.visible" v-model="dialog.tagInput.scan_urls.value" size="mini" style="width: auto" @keyup.enter.native="handleTagInputConfirm('scan_urls')" @blur="handleTagInputConfirm('scan_urls')" />
+          <el-button v-else size="mini" @click="dialog.tagInput.scan_urls.visible = true">+ New</el-button>
         </el-form-item>
         <el-form-item prop="list_url_regexes" label="列表页URL规则">
-          <el-select v-model="dialog.form.list_url_regexes" clearable multiple filterable allow-create />
+          <el-tag v-for="(url, index) in dialog.form.list_url_regexes" :key="url" closable :disable-transitions="false" @close="handleCloseTag('list_url_regexes', index)">
+            {{ url }}
+          </el-tag>
+          <el-input v-if="dialog.tagInput.list_url_regexes.visible" v-model="dialog.tagInput.list_url_regexes.value" size="mini" style="width: auto" @keyup.enter.native="handleTagInputConfirm('list_url_regexes')" @blur="handleTagInputConfirm('list_url_regexes')" />
+          <el-button v-else size="mini" @click="dialog.tagInput.list_url_regexes.visible = true">+ New</el-button>
         </el-form-item>
         <el-form-item prop="content_url_regexes" label="内容页URL规则">
-          <el-select v-model="dialog.form.content_url_regexes" clearable multiple filterable allow-create />
+          <el-tag v-for="(url, index) in dialog.form.content_url_regexes" :key="url" closable :disable-transitions="false" @close="handleCloseTag('content_url_regexes', index)">
+            {{ url }}
+          </el-tag>
+          <el-input v-if="dialog.tagInput.content_url_regexes.visible" v-model="dialog.tagInput.content_url_regexes.value" size="mini" style="width: auto" @keyup.enter.native="handleTagInputConfirm('content_url_regexes')" @blur="handleTagInputConfirm('content_url_regexes')" />
+          <el-button v-else size="mini" @click="dialog.tagInput.content_url_regexes.visible = true">+ New</el-button>
         </el-form-item>
         <el-form-item prop="fields" label-width="0px">
           <el-table
@@ -196,6 +226,12 @@ export default {
         visible: false,
         title: "",
         form: Object.assign({}, originItem, { fields: [] }),
+        tagInput: {
+          domains: { visible: false, value: "" },
+          scan_urls: { visible: false, value: "" },
+          list_url_regexes: { visible: false, value: "" },
+          content_url_regexes: { visible: false, value: "" },
+        },
         table: {
           loading: false,
           data: [],
@@ -211,6 +247,20 @@ export default {
     this.handleSelect();
   },
   methods: {
+    handleCloseTag(param, $index) {
+      this.dialog.form[param].splice($index, 1);
+    },
+    handleTagInputConfirm(param) {
+      let value = this.dialog.tagInput[param].value;
+      if (value) {
+        if (!this.dialog.form[param]) {
+          this.dialog.form[param] = [];
+        }
+        this.dialog.form[param].push(value);
+      }
+      this.dialog.tagInput[param].visible = false;
+      this.dialog.tagInput[param].value = "";
+    },
     // 新增字段规则子项
     handlePushFieldChildrenRow({ row, column, $index }, obj = this.dialog.form.fields, currentIndex = 0) {
       if (currentIndex === undefined) return;
@@ -272,7 +322,7 @@ export default {
     //
     handleTest() {
       this.dialog.table.loading = true;
-      this.dialog.table.cols = this.dialog.form.fields.map((v) => v);
+      this.dialog.table.cols = JSON.parse(JSON.stringify(this.dialog.form.fields));
       test_phpspider(this.dialog.form)
         .then((res) => {
           this.dialog.table.data = res;
@@ -288,6 +338,7 @@ export default {
       this.dialog.title = "";
       this.dialog.form = Object.assign({}, originItem, { fields: [] });
       this.dialog.table.data = [];
+      this.dialog.table.cols = [];
     },
     handleSubmitDialog() {
       if (this.dialog.target === "insert") {
@@ -315,13 +366,30 @@ export default {
         this.dialog.form.fields = [];
       }
       this.dialog.table.data = [];
+      this.dialog.table.cols = [];
       this.dialog.visible = true;
+    },
+    handleUpdateParams(data) {
+      this.table.loading = true;
+      Promise.all(
+        this.table.multipleSelection.map((v) => {
+          return update_phpspider(Object.assign({}, v, data));
+        })
+      )
+        .then((res) => {
+          this.$message.success("更新成功!");
+          this.handleSelect();
+        })
+        .finally(() => {
+          this.table.loading = false;
+        });
     },
     handleInsert() {
       this.dialog.target = "insert";
       this.dialog.title = "New PhpSider";
       this.dialog.form = Object.assign({}, originItem, { fields: [] });
       this.dialog.table.data = [];
+      this.dialog.table.cols = [];
       this.dialog.visible = true;
     },
     handleSelectionChange(val) {
@@ -386,5 +454,8 @@ export default {
 }
 ::v-deep .el-dialog__wrapper .el-table__header-wrapper th {
   text-align: center;
+}
+::v-deep .el-dialog__wrapper .el-tag {
+  margin-right: 8px;
 }
 </style>
