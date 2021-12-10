@@ -142,6 +142,30 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/typecho',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/typecho/index'),
+        name: 'Typecho',
+        meta: { title: 'Typecho', icon: 'icon', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/phpspider',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/phpspider/index'),
+        name: 'PhpSpider',
+        meta: { title: 'PhpSpider', icon: 'icon', noCache: true }
+      }
+    ]
+  },
+  {
     path: '/permission',
     component: Layout,
     redirect: '/permission/page',
