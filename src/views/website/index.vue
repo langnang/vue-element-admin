@@ -36,9 +36,6 @@
         <el-tooltip effect="dark" content="新增" placement="bottom">
           <el-button circle size="mini" type="primary" icon="el-icon-plus" @click="handleInsert" />
         </el-tooltip>
-        <el-tooltip effect="dark" content="编辑" placement="bottom">
-          <el-button circle size="mini" type="warning" icon="el-icon-edit" :disabled="table.multipleSelection.length !== 1" @click="handleUpdate" />
-        </el-tooltip>
         <el-tooltip effect="dark" content="删除" placement="bottom">
           <el-button circle size="mini" type="danger" icon="el-icon-delete" :disabled="table.multipleSelection.length === 0" @click="handleDelete" />
         </el-tooltip>
@@ -71,7 +68,7 @@
       </el-form-item>
     </el-form>
 
-    <el-table v-loading="table.loading" border size="mini" :data="table.data" @selection-change="handleSelectionChange">
+    <el-table v-loading="table.loading" border size="mini" :data="table.data" @selection-change="handleSelectionChange" @row-dblclick="handleUpdate">
       <el-table-column align="center" show-overflow-tooltip type="selection" width="45" />
       <el-table-column align="center" show-overflow-tooltip prop="title" label="标题" width="200">
         <template v-slot="{ row }">
@@ -285,10 +282,10 @@ export default {
         return;
       }
     },
-    handleUpdate() {
+    handleUpdate(row) {
       this.dialog.target = "update";
-      this.dialog.title = `Update ${this.table.multipleSelection[0].title}`;
-      this.dialog.form = Object.assign({}, originItem, this.table.multipleSelection[0]);
+      this.dialog.title = `Update ${row.title}`;
+      this.dialog.form = Object.assign({}, originItem, row);
       this.dialog.visible = true;
     },
     handleInsert() {

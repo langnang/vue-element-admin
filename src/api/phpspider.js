@@ -1,5 +1,10 @@
 import request from '@/utils/request'
 
+export const select_phpspider_options = () => request({
+  url: process.env.VUE_APP_PHP_API + '/phpspider/options',
+  method: 'GET',
+})
+
 export function test_phpspider(data) {
   return request({
     url: process.env.VUE_APP_PHP_API + '/phpspider/test',

@@ -2,22 +2,19 @@
   <div>
     <el-form ref="form" :model="form" :inline="true" size="small">
       <el-form-item>
-        <el-input v-model="form.title" placeholder="标题" />
+        <el-input v-model="form.title" placeholder="标题" clearable />
       </el-form-item>
       <el-form-item>
-        <el-input v-model="form.domains" placeholder="域名" />
+        <el-input v-model="form.domains" placeholder="域名" clearable />
       </el-form-item>
       <el-form-item style="width: 100px">
         <el-select v-model="form.type" placeholder="类别" clearable>
-          <el-option value="post" label="正文" />
-          <el-option value="draft" label="草稿" />
+          <el-option v-for="(v, k) in options.typeOptions" :key="k" :value="k" :label="v" />
         </el-select>
       </el-form-item>
       <el-form-item style="width: 100px">
         <el-select v-model="form.status" placeholder="状态" clearable>
-          <el-option value="public" label="公共" />
-          <el-option value="protected" label="保护" />
-          <el-option value="private" label="私有" />
+          <el-option v-for="(v, k) in options.statusOptions" :key="k" :value="k" :label="v" />
         </el-select>
       </el-form-item>
 
@@ -28,9 +25,6 @@
       <el-form-item style="float: right; margin-right: 0">
         <el-tooltip effect="dark" content="新增" placement="bottom">
           <el-button circle size="mini" type="primary" icon="el-icon-plus" @click="handleInsert" />
-        </el-tooltip>
-        <el-tooltip effect="dark" content="编辑" placement="bottom">
-          <el-button circle size="mini" type="warning" icon="el-icon-edit" :disabled="table.multipleSelection.length !== 1" @click="handleUpdate" />
         </el-tooltip>
         <el-tooltip effect="dark" content="删除" placement="bottom">
           <el-button circle size="mini" type="danger" icon="el-icon-delete" :disabled="table.multipleSelection.length === 0" @click="handleDelete" />
@@ -64,10 +58,10 @@
       </el-form-item>
     </el-form>
 
-    <el-table v-loading="table.loading" border size="mini" :data="table.data" @selection-change="handleSelectionChange">
+    <el-table v-loading="table.loading" border size="mini" :data="table.data" @selection-change="handleSelectionChange" @row-dblclick="handleUpdate">
       <el-table-column align="center" show-overflow-tooltip type="selection" width="45" />
       <el-table-column align="center" show-overflow-tooltip prop="title" label="标题" width="160" />
-      <el-table-column align="center" show-overflow-tooltip prop="domains" label="域名" width="350" />
+      <el-table-column align="center" show-overflow-tooltip prop="domains" label="域名" width="200" />
       <el-table-column align="center" show-overflow-tooltip prop="content_url_regexes" label="内容页URL规则" />
       <el-table-column align="center" show-overflow-tooltip prop="order" label="排序" width="80" />
       <el-table-column align="center" show-overflow-tooltip prop="type" label="类别" width="80" />
@@ -81,8 +75,8 @@
 
     <el-pagination v-if="table.data.length !== 0" layout="total, sizes, prev, pager, next, jumper" :page-sizes="[10, 20, 50, 100]" :total="pagination.total" :current-page="pagination.page" :page-size="pagination.size" @current-change="handleCurrentChange" @size-change="handleSizeChange" />
 
-    <el-dialog :title="dialog.title" :visible.sync="dialog.visible" width="80%">
-      <el-form ref="dialog" v-loading="dialog.loading" :model="dialog.data" label-width="120px">
+    <el-dialog :title="dialog.title" :visible.sync="dialog.visible" width="80%" top="8vh">
+      <el-form ref="dialog" :model="dialog.data" label-width="120px">
         <el-form-item prop="title" label="标题">
           <el-input v-model="dialog.form.title" />
         </el-form-item>
@@ -98,47 +92,65 @@
         <el-form-item prop="content_url_regexes" label="内容页URL规则">
           <el-select v-model="dialog.form.content_url_regexes" clearable multiple filterable allow-create />
         </el-form-item>
-        <el-form-item label="抽取规则" />
         <el-form-item prop="fields" label-width="0px">
-          <el-table :data="dialog.form.fields" style="width: 100%" size="mini" border resizable :tree-props="{ children: 'children', hasChildren: 'hasChildren' }" row-key="name" default-expand-all>
+          <el-table
+            :data="dialog.form.fields"
+            style="width: 100%"
+            size="mini"
+            border
+            resizable
+            default-expand-all
+            :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+            :row-key="
+              (row) => {
+                return Math.random();
+              }
+            "
+          >
             <el-table-column prop="name" label="列名" width="200">
               <template v-slot="{ row }">
-                <el-input v-model="row.name" type="text" style="width: auto; position: absolute; top: 6px; margin-right: 10px" />
+                <el-input v-model="row.name" size="mini" type="text" style="width: auto; position: absolute; top: 6px; margin-right: 10px" />
               </template>
             </el-table-column>
             <el-table-column align="center" show-overflow-tooltip prop="description" label="描述" width="160">
               <template v-slot="{ row }">
-                <el-input v-model="row.description" type="text" />
+                <el-input v-model="row.description" size="mini" type="text" />
               </template>
             </el-table-column>
             <el-table-column align="center" show-overflow-tooltip prop="selector" label="元素选择器">
               <template v-slot="{ row }">
-                <el-input v-model="row.selector" type="text" />
+                <el-input v-model="row.selector" size="mini" type="text" />
               </template>
             </el-table-column>
             <el-table-column align="center" show-overflow-tooltip prop="required" label="必要" width="65">
               <template v-slot="{ row }">
-                <el-switch v-model="row.required" />
+                <el-switch v-model="row.required" size="mini" />
               </template>
             </el-table-column>
             <el-table-column align="center" show-overflow-tooltip prop="repeated" label="多项" width="65">
               <template v-slot="{ row }">
-                <el-switch v-model="row.repeated" />
+                <el-switch v-model="row.repeated" size="mini" />
               </template>
             </el-table-column>
             <el-table-column align="center" show-overflow-tooltip label="操作" width="120">
               <template slot="header">
-                <el-button type="primary" size="mini" round icon="el-icon-plus" @click="dialog.form.fields.push({})" />
+                <el-button type="primary" size="mini" round icon="el-icon-plus" @click="dialog.form.fields.push({ id: Math.random() })" />
               </template>
               <template v-slot="scope">
-                <el-button type="text" icon="el-icon-circle-plus-outline" @click="handlePushFieldChildrenRow(scope)" />
-                <el-button type="text" icon="el-icon-delete" @click="handleDeleteFieldRow(scope)" />
-                <el-button type="text" icon="el-icon-copy-document" @click="handleCopyFieldRow(scope)" />
+                <el-button size="mini" type="text" icon="el-icon-circle-plus-outline" @click="handlePushFieldChildrenRow(scope)" />
+                <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDeleteFieldRow(scope)" />
+                <el-button size="mini" type="text" icon="el-icon-copy-document" @click="handleCopyFieldRow(scope)" />
               </template>
             </el-table-column>
           </el-table>
         </el-form-item>
       </el-form>
+      <el-table v-loading="dialog.table.loading" size="mini" :data="dialog.table.data" border>
+        <el-table-column align="center" show-overflow-tooltip type="index" label="序号" />
+        <el-table-column align="center" show-overflow-tooltip prop="url" label="URL" />
+        <el-table-column align="center" show-overflow-tooltip prop="title" label="TITLE" />
+        <el-table-column v-for="(col, index) in dialog.table.cols" :key="index" align="center" show-overflow-tooltip :label="col.description || col.name" :prop="'content.' + col.name" />
+      </el-table>
       <span slot="footer">
         <el-button type="warning" style="float: left" @click="handleTest">测 试</el-button>
         <el-button @click="handleCloseDialog">取 消</el-button>
@@ -150,7 +162,7 @@
 <script>
 import { getToken } from "@/utils/auth";
 import { saveAs } from "file-saver";
-import { test_phpspider, insert_phpspider, delete_phpspider, update_phpspider, select_phpspider_list, upload_phpspider, select_phpspider_keywords } from "@/api/phpspider";
+import { select_phpspider_options, test_phpspider, insert_phpspider, delete_phpspider, update_phpspider, select_phpspider_list, upload_phpspider } from "@/api/phpspider";
 const originItem = {
   title: null,
   domains: null,
@@ -161,15 +173,13 @@ const originItem = {
   status: null,
   type: null,
 };
-const typeOptions = {};
-const statusOptions = {};
 export default {
   data() {
     return {
       token: getToken(),
       upload_phpspider,
+      options: {},
       form: Object.assign({}, originItem, { fields: [] }),
-      keywordOptions: [],
       table: {
         loading: false,
         data: [],
@@ -186,10 +196,18 @@ export default {
         visible: false,
         title: "",
         form: Object.assign({}, originItem, { fields: [] }),
+        table: {
+          loading: false,
+          data: [],
+          cols: [],
+        },
       },
     };
   },
   created() {
+    select_phpspider_options().then((res) => {
+      this.options = res;
+    });
     this.handleSelect();
   },
   methods: {
@@ -198,7 +216,7 @@ export default {
       if (currentIndex === undefined) return;
       for (let i = 0; i <= obj.length - 1; i++) {
         if (currentIndex === $index) {
-          const new_item = { name: new Date().valueOf() };
+          const new_item = {};
           obj[i].children ? obj[i].children.push(new_item) : (obj[i].children = [new_item]);
           this.$set(this.dialog.form, "fields", [...this.dialog.form.fields]);
           return;
@@ -211,7 +229,7 @@ export default {
     handleCopyFieldRow({ row, column, $index }) {
       this.dialog.form.fields.splice($index + 1, 0, {
         ...this.dialog.form.fields[$index],
-        ...{ name: new Date().valueOf() },
+        ...{},
       });
     },
     handleDeleteFieldRow({ row, column, $index }) {
@@ -253,13 +271,14 @@ export default {
     },
     //
     handleTest() {
-      this.dialog.loading = true;
+      this.dialog.table.loading = true;
+      this.dialog.table.cols = this.dialog.form.fields.map((v) => v);
       test_phpspider(this.dialog.form)
         .then((res) => {
-          var_dump(res);
+          this.dialog.table.data = res;
         })
         .finally(() => {
-          this.dialog.loading = false;
+          this.dialog.table.loading = false;
         });
     },
     // 关闭弹窗
@@ -268,6 +287,7 @@ export default {
       this.dialog.target = "";
       this.dialog.title = "";
       this.dialog.form = Object.assign({}, originItem, { fields: [] });
+      this.dialog.table.data = [];
     },
     handleSubmitDialog() {
       if (this.dialog.target === "insert") {
@@ -287,20 +307,21 @@ export default {
         return;
       }
     },
-    handleUpdate() {
+    handleUpdate(row) {
       this.dialog.target = "update";
-      this.dialog.title = `Update ${this.table.multipleSelection[0].title}`;
-      this.dialog.form = Object.assign({}, originItem, this.table.multipleSelection[0]);
+      this.dialog.title = `Update ${row.title}`;
+      this.dialog.form = Object.assign({}, originItem, row);
       if (this.dialog.form.fields === null) {
         this.dialog.form.fields = [];
       }
+      this.dialog.table.data = [];
       this.dialog.visible = true;
-      console.log(this.dialog.form);
     },
     handleInsert() {
       this.dialog.target = "insert";
       this.dialog.title = "New PhpSider";
       this.dialog.form = Object.assign({}, originItem, { fields: [] });
+      this.dialog.table.data = [];
       this.dialog.visible = true;
     },
     handleSelectionChange(val) {
@@ -329,15 +350,6 @@ export default {
         .finally(() => {
           this.table.loading = false;
         });
-    },
-    getKeywordList(str) {
-      if (str === "") {
-        this.keywordOptions = [];
-        return;
-      }
-      select_phpspider_keywords(str).then((res) => {
-        this.keywordOptions = res.rows;
-      });
     },
     handleCurrentChange(val) {
       this.pagination.page = val;
