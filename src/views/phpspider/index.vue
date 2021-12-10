@@ -72,12 +72,12 @@
       <el-table-column align="center" show-overflow-tooltip prop="order" label="排序" width="80" />
       <el-table-column align="center" show-overflow-tooltip prop="type" label="类别" width="80">
         <template v-slot="{ row }">
-          {{ options.type_options[row.type] || "" }}
+          {{ row.type ? options.type_options[row.type] : "" }}
         </template>
       </el-table-column>
       <el-table-column align="center" show-overflow-tooltip prop="status" label="状态" width="80">
         <template v-slot="{ row }">
-          {{ options.status_options[row.status] || "" }}
+          {{ row.status ? options.status_options[row.status] : "" }}
         </template>
       </el-table-column>
       <el-table-column align="center" show-overflow-tooltip prop="create_time" label="创建时间" width="140" />
@@ -92,7 +92,11 @@
     <el-dialog :title="dialog.title" :visible.sync="dialog.visible" width="80%" top="8vh">
       <el-form ref="dialog" :model="dialog.data" label-width="120px">
         <el-form-item prop="title" label="标题">
-          <el-input v-model="dialog.form.title" />
+          <el-input v-model="dialog.form.title">
+            <el-select slot="append" v-model="dialog.form.type" style="width: 80px">
+              <el-option v-for="(v, k) in options.type_options" :key="k" :value="k" :label="v" />
+            </el-select>
+          </el-input>
         </el-form-item>
         <el-form-item prop="domains" label="域名">
           <el-tag v-for="(url, index) in dialog.form.domains" :key="url" closable :disable-transitions="false" @close="handleCloseTag('domains', index)">
