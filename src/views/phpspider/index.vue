@@ -69,17 +69,18 @@
       <el-table-column align="center" show-overflow-tooltip prop="title" label="标题" width="160" />
       <el-table-column align="center" show-overflow-tooltip prop="domains" label="域名" width="200" />
       <el-table-column align="center" show-overflow-tooltip prop="content_url_regexes" label="内容页URL规则" />
-      <el-table-column align="center" show-overflow-tooltip prop="order" label="排序" width="80" />
-      <el-table-column align="center" show-overflow-tooltip prop="type" label="类别" width="80">
+      <el-table-column align="center" show-overflow-tooltip prop="order" label="排序" width="60" />
+      <el-table-column align="center" show-overflow-tooltip prop="type" label="类别" width="60">
         <template v-slot="{ row }">
           {{ row.type ? options.type_options[row.type] : "" }}
         </template>
       </el-table-column>
-      <el-table-column align="center" show-overflow-tooltip prop="status" label="状态" width="80">
+      <el-table-column align="center" show-overflow-tooltip prop="status" label="状态" width="60">
         <template v-slot="{ row }">
           {{ row.status ? options.status_options[row.status] : "" }}
         </template>
       </el-table-column>
+      <el-table-column align="center" show-overflow-tooltip prop="content_count" label="抽取数" width="70" />
       <el-table-column align="center" show-overflow-tooltip prop="create_time" label="创建时间" width="140" />
       <el-table-column align="center" show-overflow-tooltip prop="update_time" label="更新时间" width="140" />
       <template v-slot:empty>
