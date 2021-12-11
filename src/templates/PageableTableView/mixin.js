@@ -1,7 +1,12 @@
 import { getToken } from "@/utils/auth";
+import SelectInlineFrom from './components/SelectInlineForm'
+import PageableTable from './components/PageableTable'
+import RightButtonGroup from './components/RightButtonGroup'
+import RowForm from './components/RowForm'
 
 export default {
   name: "PageableDataTable",
+  components: { SelectInlineFrom, RightButtonGroup, PageableTable, RowForm },
   data() {
     return {
       token: getToken(),
