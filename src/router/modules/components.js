@@ -13,6 +13,12 @@ const componentsRouter = {
   },
   children: [
     {
+      path: 'code-mirror',
+      component: () => import('@/views/components-demo/code-mirror-editor'),
+      name: 'CodeMirrorEditor',
+      meta: { title: 'CodeMirrorEditor' }
+    },
+    {
       path: 'tinymce',
       component: () => import('@/views/components-demo/tinymce'),
       name: 'TinymceDemo',

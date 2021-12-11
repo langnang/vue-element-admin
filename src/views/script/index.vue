@@ -89,7 +89,7 @@
 
     <el-pagination v-if="table.data.length !== 0" layout="total, sizes, prev, pager, next, jumper" :page-sizes="[10, 20, 50, 100]" :total="pagination.total" :current-page="pagination.page" :page-size="pagination.size" @current-change="handleCurrentChange" @size-change="handleSizeChange" />
 
-    <el-dialog :title="dialog.title" :visible.sync="dialog.visible">
+    <el-dialog :title="dialog.title" :visible.sync="dialog.visible" top="5vh" width="80%">
       <el-form ref="dialog" v-loading="dialog.loading" :model="dialog.data" label-width="80px">
         <el-form-item label="标题">
           <el-input v-model="dialog.form.title" placeholder="标题" />
@@ -100,7 +100,9 @@
         <el-form-item label="描述">
           <el-input v-model="dialog.form.description" type="textarea" placeholder="描述" />
         </el-form-item>
-        <el-form-item label-width="0" />
+        <el-form-item label-width="0">
+          <CodeMirrorEditor ref="editor" v-model="dialog.form.content" />
+        </el-form-item>
       </el-form>
       <span slot="footer">
         <el-button @click="handleCloseDialog">取 消</el-button>
@@ -113,20 +115,22 @@
 import { getToken } from "@/utils/auth";
 import { saveAs } from "file-saver";
 import { crawler_script_info, insert_script, delete_script, update_script, select_script_list, upload_script, select_script_keywords } from "@/api/script";
+import CodeMirrorEditor from "@/components/CodeMirrorEditor";
 const originItem = {
-  url: "",
-  title: "",
-  keywords: "",
-  description: "",
-  language: "",
-  content: "",
-  status: "",
-  type: "",
+  title: null,
+  keywords: null,
+  description: null,
+  language: null,
+  content: null,
+  status: null,
+  type: null,
 };
 const typeOptions = {};
 const statusOptions = {};
 export default {
-  components: {},
+  components: {
+    CodeMirrorEditor,
+  },
   data() {
     return {
       token: getToken(),

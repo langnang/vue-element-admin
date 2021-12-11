@@ -44,6 +44,14 @@ export function select_phpspider_list(data) {
   })
 }
 
+export function select_phpspider_content_list(data) {
+  return request({
+    url: process.env.VUE_APP_PHP_API + '/phpspider/content/list',
+    method: 'POST',
+    data
+  })
+}
+
 export const upload_phpspider = process.env.VUE_APP_PHP_API + '/phpspider/upload';
 
 export const select_phpspider_keywords = (keyword = '') => request({

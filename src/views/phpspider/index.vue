@@ -80,7 +80,11 @@
           {{ row.status ? options.status_options[row.status] : "" }}
         </template>
       </el-table-column>
-      <el-table-column align="center" show-overflow-tooltip prop="content_count" label="抽取数" width="70" />
+      <el-table-column align="center" show-overflow-tooltip prop="content_count" label="抽取数" width="70">
+        <template v-slot="{ row }">
+          <el-link type="primary" :underline="false" style="font-size: 12px" @click="handleSelectContentList(row)">{{ row.content_count }}</el-link>
+        </template>
+      </el-table-column>
       <el-table-column align="center" show-overflow-tooltip prop="create_time" label="创建时间" width="140" />
       <el-table-column align="center" show-overflow-tooltip prop="update_time" label="更新时间" width="140" />
       <template v-slot:empty>
@@ -180,24 +184,21 @@
           </el-table>
         </el-form-item>
       </el-form>
-      <el-table v-loading="dialog.table.loading" size="mini" :data="dialog.table.data" border>
-        <el-table-column align="center" show-overflow-tooltip type="index" label="序号" />
-        <el-table-column align="center" show-overflow-tooltip prop="url" label="URL" />
-        <el-table-column align="center" show-overflow-tooltip prop="title" label="TITLE" />
-        <el-table-column v-for="(col, index) in dialog.table.cols" :key="index" align="center" show-overflow-tooltip :label="col.description || col.name" :prop="'content.' + col.name" />
-      </el-table>
+      <PhpSpiderContentTable v-loading="dialog.table.loading" :data="dialog.table.data" :cols="dialog.table.cols" />
       <span slot="footer">
         <el-button type="warning" style="float: left" @click="handleTest">测 试</el-button>
         <el-button @click="handleCloseDialog">取 消</el-button>
         <el-button type="primary" @click="handleSubmitDialog">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog :visible.sync="content_dialog.visible" width="80%" top="5vh">
+      <PhpSpiderContentTable :data="content_table.data" :cols="content_table.cols" />
+    </el-dialog>
   </div>
 </template>
 <script>
-import { getToken } from "@/utils/auth";
 import { saveAs } from "file-saver";
-import { select_phpspider_options, test_phpspider, insert_phpspider, delete_phpspider, update_phpspider, select_phpspider_list, upload_phpspider } from "@/api/phpspider";
+import { select_phpspider_options, test_phpspider, insert_phpspider, delete_phpspider, update_phpspider, select_phpspider_list, select_phpspider_content_list, upload_phpspider } from "@/api/phpspider";
 const originItem = {
   title: null,
   domains: null,
@@ -208,23 +209,20 @@ const originItem = {
   status: null,
   type: null,
 };
+import mixin from "@/templates/PageableTableView/mixin.js";
+import PhpSpiderContentTable from "./components/ContentTable";
+
 export default {
+  components: { PhpSpiderContentTable },
+  mixins: [mixin],
   data() {
     return {
-      token: getToken(),
       upload_phpspider,
-      options: {},
+      options: {
+        type_options: [],
+        status_options: [],
+      },
       form: Object.assign({}, originItem, { fields: [] }),
-      table: {
-        loading: false,
-        data: [],
-        multipleSelection: [],
-      },
-      pagination: {
-        page: 1,
-        size: 10,
-        total: 0,
-      },
       dialog: {
         target: "", //insert update
         loading: false,
@@ -243,15 +241,27 @@ export default {
           cols: [],
         },
       },
+      content_table: Object.assign({}, this.table),
+      content_dialog: { visible: false },
     };
   },
   created() {
+    this.table.loading = true;
     select_phpspider_options().then((res) => {
       this.options = res;
+      this.handleSelect();
     });
-    this.handleSelect();
   },
   methods: {
+    handleSelectContentList(row) {
+      select_phpspider_content_list({
+        phpspider: parseInt(row.id),
+      }).then((res) => {
+        this.content_table.data = res.rows;
+        this.content_table.cols = row.fields;
+        this.content_dialog.visible = true;
+      });
+    },
     handleCloseTag(param, $index) {
       this.dialog.form[param].splice($index, 1);
     },
