@@ -87,7 +87,7 @@
 
     <el-dialog :title="dialog.title" :visible.sync="dialog.visible" top="5vh" width="80%">
       <RowForm v-bind="dialog.form" :cols="dialog.form.cols" />
-      <MonacoEditor />
+      <!-- <MonacoEditor /> -->
       <span slot="footer">
         <el-button @click="handleCloseDialog">取 消</el-button>
         <el-button type="primary" @click="handleSubmitDialog">确 定</el-button>
@@ -98,12 +98,12 @@
 <script>
 import { saveAs } from "file-saver";
 import { insert_script, delete_script, update_script, select_script_list as select_list, upload_script, select_script_keywords } from "@/api/script";
-import MonacoEditor from "@/components/MonacoEditor";
+// import MonacoEditor from "@/components/MonacoEditor";
 import mixin from "@/templates/PageableTableView/mixin.js";
 import { originItem, inlineForm, rowForm } from "./options";
 export default {
   components: {
-    MonacoEditor,
+    // MonacoEditor,
   },
   mixins: [mixin],
   data() {

@@ -1,7 +1,7 @@
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
-const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+// const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
@@ -48,7 +48,7 @@ module.exports = {
       }
     },
     plugins: [
-      new MonacoWebpackPlugin()
+      // new MonacoWebpackPlugin()
     ]
   },
   chainWebpack(config) {
