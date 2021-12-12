@@ -4,8 +4,6 @@ export const theme_options = package_files?.files?.find(v => v.type === 'directo
 
 export const mode_options = package_files?.files?.find(v => v.type === 'directory' && v.name === 'mode')?.files?.filter(v => v.type === 'directory')
 
-console.log(mode_options)
-
 // export const mode_options = [
 //   // CSS
 //   "text/css", "text/x-scss", "text/x-less",

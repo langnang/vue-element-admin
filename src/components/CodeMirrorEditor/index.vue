@@ -1,16 +1,16 @@
 <template>
   <div style="position: relative">
-    <slot name="prepend" :options="options" />
+    <slot name="prepend" :$options="options" />
     <textarea ref="editor" />
     <slot />
   </div>
 </template>
 
 <script>
-// import CodeMirror from "codemirror";
+import CodeMirror from "codemirror";
 // import "codemirror/addon/lint/lint.css";
-// import "codemirror/lib/codemirror.css";
-require("script-loader!jsonlint");
+import "codemirror/lib/codemirror.css";
+// require("script-loader!jsonlint");
 // import "codemirror/addon/lint/lint";
 // import "codemirror/addon/lint/json-lint";
 import * as options from "./options";
