@@ -142,6 +142,18 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/meta',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/meta/index'),
+        name: 'Meta',
+        meta: { title: 'Meta', icon: 'icon', noCache: true }
+      }
+    ]
+  },
+  {
     path: '/typecho',
     component: Layout,
     children: [
