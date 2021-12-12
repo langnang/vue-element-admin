@@ -1,15 +1,19 @@
 <template>
-  <textarea ref="editor" />
+  <div style="position: relative">
+    <slot name="prepend" :options="options" />
+    <textarea ref="editor" />
+    <slot />
+  </div>
 </template>
 
 <script>
-import CodeMirror from "codemirror";
-import "codemirror/addon/lint/lint.css";
-import "codemirror/lib/codemirror.css";
+// import CodeMirror from "codemirror";
+// import "codemirror/addon/lint/lint.css";
+// import "codemirror/lib/codemirror.css";
 require("script-loader!jsonlint");
-import "codemirror/addon/lint/lint";
+// import "codemirror/addon/lint/lint";
 // import "codemirror/addon/lint/json-lint";
-
+import * as options from "./options";
 export default {
   name: "CodeMirrorEditor",
   props: {
@@ -19,23 +23,25 @@ export default {
     },
     language: {
       type: String,
-      default: "",
+      default: "markdown",
     },
     theme: {
       type: String,
-      default: "",
+      default: "default",
     },
   },
   data() {
     return {
       editor: null,
+      options,
     };
   },
   watch: {
     value(value) {
       const editorValue = this.editor.getValue();
       if (value !== editorValue) {
-        this.editor.setValue(JSON.stringify(this.value, null, 2));
+        this.editor.setValue(value || "");
+        // this.editor.setValue(JSON.stringify(this.value, null, 2));
       }
     },
     theme: {
@@ -44,7 +50,7 @@ export default {
         this.editor.setOption("theme", value);
       },
     },
-    mode: {
+    language: {
       handler(value) {
         require(`codemirror/mode/${value}/${value}`);
         this.editor.setOption("mode", value);
@@ -52,17 +58,20 @@ export default {
     },
   },
   mounted() {
+    require(`codemirror/theme/${this.theme}.css`);
+    require(`codemirror/mode/${this.language}/${this.language}`);
     this.editor = CodeMirror.fromTextArea(this.$refs.editor, {
       lineNumbers: true,
       // mode: "application/json",
       // gutters: ["CodeMirror-lint-markers"],
       // theme: "idea",
       theme: this.theme,
-      mode: this.mode,
+      mode: this.language,
       lint: true,
     });
 
-    this.editor.setValue(JSON.stringify(this.value, null, 2));
+    // this.editor.setValue(JSON.stringify(this.value, null, 2));
+    this.editor.setValue(this.value || "");
     this.editor.on("change", (cm) => {
       this.$emit("changed", cm.getValue());
       this.$emit("input", cm.getValue());
