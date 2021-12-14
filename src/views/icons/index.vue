@@ -1,13 +1,12 @@
 <template>
   <div class="icons-container">
     <aside>
-      <a href="https://panjiachen.github.io/vue-element-admin-site/guide/advanced/icon.html" target="_blank">Add and use
-      </a>
+      <el-input v-model="input" clearable />
     </aside>
     <el-tabs type="border-card">
       <el-tab-pane label="Icons">
         <div class="grid">
-          <div v-for="item of svgIcons" :key="item" @click="handleClipboard(generateIconCode(item),$event)">
+          <div v-for="item of svgIcons.filter((v) => v.indexOf(input) > -1)" :key="item" @click="handleClipboard(generateIconCode(item), $event)">
             <el-tooltip placement="top">
               <div slot="content">
                 {{ generateIconCode(item) }}
@@ -22,7 +21,7 @@
       </el-tab-pane>
       <el-tab-pane label="Element-UI Icons">
         <div class="grid">
-          <div v-for="item of elementIcons" :key="item" @click="handleClipboard(generateElementIconCode(item),$event)">
+          <div v-for="item of elementIcons.filter((v) => v.indexOf(input) > -1)" :key="item" @click="handleClipboard(generateElementIconCode(item), $event)">
             <el-tooltip placement="top">
               <div slot="content">
                 {{ generateElementIconCode(item) }}
@@ -35,35 +34,88 @@
           </div>
         </div>
       </el-tab-pane>
+      <el-tab-pane label="Font Awesome fas">
+        <div class="grid">
+          <div v-for="item of fas.filter((v) => v.indexOf(input) > -1)" :key="item" @click="handleClipboard(generateFontAwesomeIconCode('fas', item), $event)">
+            <el-tooltip placement="top">
+              <div slot="content">
+                {{ generateFontAwesomeIconCode("fas", item) }}
+              </div>
+              <div class="icon-item">
+                <font-awesome-icon :icon="['fas', item]" />
+                <span>{{ item }}</span>
+              </div>
+            </el-tooltip>
+          </div>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="Font Awesome fab">
+        <div class="grid">
+          <div v-for="item of fab.filter((v) => v.indexOf(input) > -1)" :key="item" @click="handleClipboard(generateFontAwesomeIconCode('fab', item), $event)">
+            <el-tooltip placement="top">
+              <div slot="content">
+                {{ generateFontAwesomeIconCode("fab", item) }}
+              </div>
+              <div class="icon-item">
+                <font-awesome-icon :icon="['fab', item]" />
+                <span>{{ item }}</span>
+              </div>
+            </el-tooltip>
+          </div>
+        </div>
+      </el-tab-pane>
+      <el-tab-pane label="Font Awesome far">
+        <div class="grid">
+          <div v-for="item of far.filter((v) => v.indexOf(input) > -1)" :key="item" @click="handleClipboard(generateFontAwesomeIconCode('far', item), $event)">
+            <el-tooltip placement="top">
+              <div slot="content">
+                {{ generateFontAwesomeIconCode("far", item) }}
+              </div>
+              <div class="icon-item">
+                <font-awesome-icon :icon="['far', item]" />
+                <span>{{ item }}</span>
+              </div>
+            </el-tooltip>
+          </div>
+        </div>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-import clipboard from '@/utils/clipboard'
-import svgIcons from './svg-icons'
-import elementIcons from './element-icons'
+import clipboard from "@/utils/clipboard";
+import svgIcons from "./svg-icons";
+import elementIcons from "./element-icons";
+import { fas, fab, far } from "./fontawesome";
 
 export default {
-  name: 'Icons',
+  name: "Icons",
   data() {
     return {
+      input: "",
       svgIcons,
-      elementIcons
-    }
+      elementIcons,
+      fas,
+      fab,
+      far,
+    };
   },
   methods: {
     generateIconCode(symbol) {
-      return `<svg-icon icon-class="${symbol}" />`
+      return `<svg-icon icon-class="${symbol}" />`;
     },
     generateElementIconCode(symbol) {
-      return `<i class="el-icon-${symbol}" />`
+      return `<i class="el-icon-${symbol}" />`;
+    },
+    generateFontAwesomeIconCode(type, symbol) {
+      return `<font-awesome-icon :icon="['${type}', '${symbol}']"/>`;
     },
     handleClipboard(text, event) {
-      clipboard(text, event)
-    }
-  }
-}
+      clipboard(text, event);
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

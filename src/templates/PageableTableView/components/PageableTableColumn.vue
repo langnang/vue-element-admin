@@ -1,7 +1,15 @@
 <template>
-  <component :is="componentName" v-bind="$props" :name="prop">
+  <!-- <component :is="componentName" v-bind="$props" :name="prop">
     <PageableTableColumn v-for="(col, index) in children" :key="index" v-bind="col" />
-  </component>
+  </component> -->
+  <el-table-column v-bind="$props" v-on="$listeners">
+    <template v-if="isSlot" v-slot="{ $index, row }" :name="prop">
+      <slot name="type" />
+      {{ $index }},{{ row[prop] }}
+      <!-- <slot v-if="isSlot" :name="prop" :row="row" :$index="$index"></slot> -->
+      <!-- <span v-else> {{ row[prop] }}</span> -->
+    </template>
+  </el-table-column>
 </template>
 <script>
 import { TableColumn } from "element-ui";
@@ -32,5 +40,6 @@ export default {
       return "el-table-column";
     },
   },
+  created() {},
 };
 </script>

@@ -64,35 +64,17 @@
       </el-form-item>
     </el-form>
 
-    <el-table v-loading="table.loading" border size="mini" :data="table.data" @selection-change="handleSelectionChange" @row-dblclick="handleUpdate">
-      <el-table-column align="center" show-overflow-tooltip type="selection" width="45" />
-      <el-table-column align="center" show-overflow-tooltip prop="title" label="标题" width="160" />
-      <el-table-column align="center" show-overflow-tooltip prop="domains" label="域名" width="200" />
-      <el-table-column align="center" show-overflow-tooltip prop="content_url_regexes" label="内容页URL规则" />
-      <el-table-column align="center" show-overflow-tooltip prop="order" label="排序" width="60" />
-      <el-table-column align="center" show-overflow-tooltip prop="type" label="类别" width="60">
-        <template v-slot="{ row }">
-          {{ row.type ? options.type_options[row.type] : "" }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" show-overflow-tooltip prop="status" label="状态" width="60">
-        <template v-slot="{ row }">
-          {{ row.status ? options.status_options[row.status] : "" }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" show-overflow-tooltip prop="content_count" label="抽取数" width="70">
-        <template v-slot="{ row }">
-          <el-link type="primary" :underline="false" style="font-size: 12px" @click="handleSelectContentList(row)">{{ row.content_count }}</el-link>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" show-overflow-tooltip prop="create_time" label="创建时间" width="140" />
-      <el-table-column align="center" show-overflow-tooltip prop="update_time" label="更新时间" width="140" />
-      <template v-slot:empty>
-        <el-empty />
+    <PageableTable v-loading="table.loading" v-bind="table" @selection-change="handleSelectionChange" @row-dblclick="handleUpdate" @current-page-change="handleCurrentChange" @size-change="handleSizeChange">
+      <template v-slot:type="{ row }">
+        {{ row.type ? options.type_options[row.type] : "" }}
       </template>
-    </el-table>
-
-    <el-pagination v-if="table.data.length !== 0" layout="total, sizes, prev, pager, next, jumper" :page-sizes="[10, 20, 50, 100]" :total="pagination.total" :current-page="pagination.page" :page-size="pagination.size" @current-change="handleCurrentChange" @size-change="handleSizeChange" />
+      <template v-slot:status="{ row }">
+        {{ row.status ? options.status_options[row.status] : "" }}
+      </template>
+      <template v-slot:content_count="{ row }">
+        <el-link type="primary" :underline="false" style="font-size: 12px" @click="handleSelectContentList(row)">{{ row.content_count }}</el-link>
+      </template>
+    </PageableTable>
 
     <el-dialog :title="dialog.title" :visible.sync="dialog.visible" width="80%" top="8vh">
       <el-form ref="dialog" :model="dialog.data" label-width="120px">
@@ -198,22 +180,14 @@
 </template>
 <script>
 import { saveAs } from "file-saver";
-import { select_phpspider_options, test_phpspider, insert_phpspider, delete_phpspider, update_phpspider, select_phpspider_list, select_phpspider_content_list, upload_phpspider } from "@/api/phpspider";
-const originItem = {
-  title: null,
-  domains: null,
-  scan_urls: null,
-  list_url_regexes: null,
-  content_url_regexes: null,
-  fields: null,
-  status: null,
-  type: null,
-};
+import { select_phpspider_options, test_phpspider, insert_phpspider, delete_phpspider, update_phpspider, select_phpspider_list as select_list, select_phpspider_content_list, upload_phpspider } from "@/api/phpspider";
+import { originItem, inlineForm, pageableTable, rowForm } from "./options";
+
 import mixin from "@/templates/PageableTableView/mixin.js";
-import PhpSpiderContentTable from "./components/ContentTable";
+import PageableTable from "../../templates/PageableTableView/components/PageableTable.vue";
 
 export default {
-  components: { PhpSpiderContentTable },
+  components: { PageableTable },
   mixins: [mixin],
   data() {
     return {
@@ -241,6 +215,7 @@ export default {
           cols: [],
         },
       },
+      table: pageableTable,
       content_table: Object.assign({}, this.table),
       content_dialog: { visible: false },
     };
@@ -253,6 +228,7 @@ export default {
     });
   },
   methods: {
+    select_list,
     handleSelectContentList(row) {
       select_phpspider_content_list({
         phpspider: parseInt(row.id),
@@ -410,30 +386,30 @@ export default {
     handleSelectionChange(val) {
       this.table.multipleSelection = val;
     },
-    handleSelect() {
-      this.pagination.page = 1;
-      this.getList();
-    },
+    // handleSelect() {
+    //   this.pagination.page = 1;
+    //   this.getList();
+    // },
     handleReset() {
       this.form = Object.assign({}, originItem, { fields: [] });
       this.handleSelect();
     },
-    getList() {
-      this.table.loading = true;
-      select_phpspider_list({
-        ...this.form,
-        ...this.pagination,
-      })
-        .then((res) => {
-          this.table.data = res.rows;
-          this.pagination.total = res.total;
-          this.pagination.page = res.page;
-          this.pagination.size = res.size;
-        })
-        .finally(() => {
-          this.table.loading = false;
-        });
-    },
+    // getList() {
+    //   this.table.loading = true;
+    //   select_phpspider_list({
+    //     ...this.form,
+    //     ...this.pagination,
+    //   })
+    //     .then((res) => {
+    //       this.table.data = res.rows;
+    //       this.pagination.total = res.total;
+    //       this.pagination.page = res.page;
+    //       this.pagination.size = res.size;
+    //     })
+    //     .finally(() => {
+    //       this.table.loading = false;
+    //     });
+    // },
     handleCurrentChange(val) {
       this.pagination.page = val;
       this.getList();

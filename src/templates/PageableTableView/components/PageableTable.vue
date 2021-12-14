@@ -1,9 +1,14 @@
 <template>
   <div>
     <el-table border size="mini" v-bind="$props" v-on="$listeners">
-      <template v-for="(col, index) in cols">
+      <!-- <template v-for="(col, index) in cols">
         <PageableTableColumn :key="index" align="center" show-overflow-tooltip v-bind="col" />
-      </template>
+      </template> -->
+      <el-table-column v-for="(col, index) in cols" :key="index" align="center" show-overflow-tooltip v-bind="col">
+        <template v-if="col.isSlot" v-slot="{ $index, row }">
+          <slot :name="col.prop" v-bind="{ $index, row }" />
+        </template>
+      </el-table-column>
       <template v-slot:empty>
         <el-empty />
       </template>
@@ -27,9 +32,10 @@
 </template>
 <script>
 import { Table, Pagination } from "element-ui";
-import PageableTableColumn from "./PageableTableColumn.vue";
+// import PageableTableColumn from "./PageableTableColumn.vue";
 export default {
-  components: { PageableTableColumn },
+  name: "PageableTable",
+  // components: { PageableTableColumn },
   extends: Table,
   props: {
     cols: {
@@ -51,7 +57,10 @@ export default {
     },
   },
   watch: {},
-  mounted() {},
+  created() {},
+  mounted() {
+    console.log("PageableTable::mounted::this.$children[0]", this.$children[0]);
+  },
   methods: {
     ...Pagination.methods,
   },

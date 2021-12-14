@@ -17,10 +17,16 @@
         <el-button v-else-if="item.operate === 'delete'" circle size="mini" type="danger" icon="el-icon-delete" v-bind="item.component" @click="$emit('on-' + item.operate)" />
 
         <el-upload v-else-if="item.operate === 'upload'" action="" accept="application/json" :headers="{}">
-          <el-button circle size="mini" type="primary" icon="el-icon-upload2" v-bind="item.component" />
+          <el-button circle size="mini" type="primary" v-bind="item.component">
+            <font-awesome-icon :icon="['fas', 'upload']" />
+          </el-button>
         </el-upload>
 
-        <el-button v-else-if="item.operate === 'download'" circle size="mini" type="primary" icon="el-icon-download" v-bind="item.component" @click="$emit('on-' + item.operate)" />
+        <el-button v-else-if="item.operate === 'download'" circle size="mini" type="primary" v-bind="item.component" @click="$emit('on-' + item.operate)">
+          <font-awesome-icon :icon="['fas', 'download']" />
+        </el-button>
+
+        <el-button v-else-if="item.operate === 'setting'" circle size="mini" type="primary" icon="el-icon-setting" v-bind="item.component" @click="$emit('on-' + item.operate)" />
 
         <component :is="item.component ? item.component.is || 'el-button' : 'el-button'" v-else circle size="mini" type="primary" icon="el-icon-plus" v-bind="item.component" @click="$emit('on-' + item.operate)" />
       </el-tooltip>

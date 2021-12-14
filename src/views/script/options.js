@@ -61,6 +61,13 @@ export const inlineForm = {
       },
       component: {},
     },
+    {
+      operate: "setting",
+      tooltip: {
+        content: "配置"
+      },
+      component: {},
+    },
   ],
 }
 
@@ -92,12 +99,12 @@ export const pageableTable = {
     {
       prop: "type",
       label: "类别",
-      width: "80"
+      width: "80",
     },
     {
       prop: "status",
       label: "状态",
-      width: "80"
+      width: "80",
     },
     {
       prop: "create_time",

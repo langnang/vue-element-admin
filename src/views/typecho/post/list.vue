@@ -67,9 +67,13 @@ export default {
     },
     tableColumns: {
       type: Array,
+      default() {
+        return [];
+      },
     },
     callListFunc: {
       type: Function,
+      default() {},
     },
   },
   data() {
