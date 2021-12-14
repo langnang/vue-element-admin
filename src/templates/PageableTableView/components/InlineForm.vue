@@ -14,7 +14,9 @@
       <el-tooltip v-for="(item, index) in rightItem" :key="index" :effect="item.tooltip.effeck || 'dark'" :placement="item.tooltip.placement || 'bottom'" v-bind="item.tooltip" style="display: inline-block; margin-left: 10px">
         <el-button v-if="item.operate === 'insert'" circle size="mini" type="primary" icon="el-icon-plus" v-bind="item.component" @click="$emit('on-' + item.operate)" />
 
-        <el-button v-else-if="item.operate === 'delete'" circle size="mini" type="danger" icon="el-icon-delete" v-bind="item.component" @click="$emit('on-' + item.operate)" />
+        <el-button v-else-if="item.operate === 'delete'" circle size="mini" type="danger" v-bind="item.component" @click="$emit('on-' + item.operate)">
+          <font-awesome-icon :icon="['far', 'trash-alt']" />
+        </el-button>
 
         <el-upload v-else-if="item.operate === 'upload'" action="" accept="application/json" :headers="{}">
           <el-button circle size="mini" type="primary" v-bind="item.component">
