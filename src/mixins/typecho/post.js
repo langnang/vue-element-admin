@@ -19,7 +19,7 @@ const post = {
   allowFeed: null,
   parent: null,
   metas: [],
-  fields: []
+  fields: [],
 };
 const postData = {
   post: { ...post },
@@ -31,20 +31,20 @@ const postData = {
     columns: [
       { type: "selection", width: 45 },
       { prop: "cid", label: "编号", width: 80 },
-      { prop: "title", label: "标题", width: 180 }
+      { prop: "title", label: "标题", width: 180 },
     ],
     page: 1,
     size: 10,
     total: 0,
-    multipleSelection: []
-  }
+    multipleSelection: [],
+  },
 };
 const postApis = {
   typechoPostInsert,
   typechoPostDelete,
   typechoPostUpdate,
   typechoPostInfo,
-  typechoPostList
+  typechoPostList,
 };
 const postMethods = {
   resetPost() {
@@ -54,7 +54,7 @@ const postMethods = {
     if (!post) {
       post = this.post;
     }
-    return typechoPostInsert(post).then(res => {
+    return typechoPostInsert(post).then((res) => {
       this.$message.success("新增成功");
       return Promise.resolve(res);
     });
@@ -64,16 +64,16 @@ const postMethods = {
     if (!rows) {
       rows = this.postList.multipleSelection;
     }
-    const cids = rows.map(v => v.cid);
+    const cids = rows.map((v) => v.cid);
 
     return this.$confirm("此操作将永久删除所选文章, 是否继续?", "提示", {
       confirmButtonText: "确定",
       cancelButtonText: "取消",
-      type: "warning"
+      type: "warning",
     })
       .then(() => {
         return new Promise((resolve, reject) => {
-          return typechoPostDelete({ cids }).then(res => {
+          return typechoPostDelete({ cids }).then((res) => {
             if (res.total === cids.length) {
               this.$message.success(`删除成功`);
             } else {
@@ -96,7 +96,7 @@ const postMethods = {
     if (!post) {
       post = this.post;
     }
-    return typechoPostUpdate(post).then(res => {
+    return typechoPostUpdate(post).then((res) => {
       this.$message.success("修改成功");
       return Promise.resolve(res);
     });
@@ -105,7 +105,7 @@ const postMethods = {
     if (!cid) {
       cid = this.post.cid;
     }
-    return typechoPostInfo({ cids: [cid], prefix }).then(res => {
+    return typechoPostInfo({ cids: [cid], prefix }).then((res) => {
       this.post = res.rows[0];
       return Promise.resolve(res);
     });
@@ -116,9 +116,9 @@ const postMethods = {
       .func({
         ...this.postList.queryParams,
         page: this.postList.page,
-        size: this.postList.size
+        size: this.postList.size,
       })
-      .then(res => {
+      .then((res) => {
         this.postList.data = res.rows;
         this.postList.page = res.page;
         this.postList.size = res.size;
@@ -139,17 +139,17 @@ const postMethods = {
   handlePostListCurrentChange(val) {
     this.postList.size = val;
     this.selectPostList();
-  }
+  },
 };
 export default {
   data() {
     return {
-      ...postData
+      ...postData,
     };
   },
   computed: {},
   methods: {
     ...postApis,
-    ...postMethods
-  }
+    ...postMethods,
+  },
 };

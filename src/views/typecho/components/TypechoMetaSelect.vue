@@ -12,11 +12,11 @@ export default {
   props: {
     value: {
       type: String,
-      default: ""
+      default: "",
     },
     placeholder: {
       type: String,
-      default: ""
+      default: "",
     },
     // 标识类型
     // * 标识整表内容不限
@@ -24,12 +24,12 @@ export default {
     // tag, category, ... 其它typecho_metas表中的type字段对应的值
     type: {
       type: String,
-      default: "tag"
-    }
+      default: "tag",
+    },
   },
   data() {
     return {
-      options: []
+      options: [],
     };
   },
   computed: {
@@ -38,7 +38,7 @@ export default {
         return { key: "prefix", label: "prefix", value: "prefix" };
       }
       return { key: "mid", label: "name", value: "mid" };
-    }
+    },
   },
   watch: {},
   created() {
@@ -47,16 +47,16 @@ export default {
   },
   methods: {
     handleQuery() {
-      typechoMetaTypeList({}).then(res => {
+      typechoMetaTypeList({}).then((res) => {
         if (this.form.type === "") {
           this.form.type = res.rows[0].type;
-        } else if (!res.rows.map(v => v.type).includes(this.form.type)) {
+        } else if (!res.rows.map((v) => v.type).includes(this.form.type)) {
           this.form.type = res.rows[0].type;
         }
         this.typeList = res.rows;
         this.handleQuery();
       });
-    }
-  }
+    },
+  },
 };
 </script>

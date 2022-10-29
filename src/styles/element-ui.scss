@@ -104,7 +104,8 @@
 }
 
 
-.el-input {
+.el-input,
+.el-select {
   &.text-center {
     .el-input__inner {
       text-align: center;
@@ -118,4 +119,14 @@
 
 .el-scrollbar__wrap:not(.el-select-dropdown__wrap) {
   overflow-x: hidden;
+}
+
+.el-form {
+  .el-form-item {
+    margin-bottom: 0;
+
+    &+.el-form-item {
+      margin-top: 20px;
+    }
+  }
 }

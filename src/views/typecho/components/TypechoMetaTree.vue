@@ -1,5 +1,5 @@
 <template>
-  <el-tree :data="depth_data" show-checkbox default-expand-all node-key="mid" highlight-current :props="props" draggable :default-checked-keys="multipleSelection.map(v => v.mid)" @check-change="handleCheckChange" />
+  <el-tree :data="depth_data" show-checkbox default-expand-all node-key="mid" highlight-current :props="props" draggable :default-checked-keys="multipleSelection.map((v) => v.mid)" @check-change="handleCheckChange" />
 </template>
 <script>
 import { typechoMetaTree } from "@/api/typecho";
@@ -11,20 +11,20 @@ export default {
       type: Object,
       default() {
         return {};
-      }
+      },
     },
     props: {
       type: Object,
       default() {
         return { children: "children", label: "name" };
-      }
+      },
     },
     depth: {
       type: Array,
       default() {
         return [];
-      }
-    }
+      },
+    },
   },
   data() {
     return {
@@ -32,14 +32,14 @@ export default {
       total: 0,
       data: [],
       tree: [],
-      multipleSelection: []
+      multipleSelection: [],
     };
   },
   computed: {
     depth_data() {
       if (this.depth.length === 0 || this.tree.length === 0) return this.tree;
       return this.depth.reduce((total, val) => total[val], this.tree);
-    }
+    },
   },
   created() {},
   methods: {
@@ -49,9 +49,9 @@ export default {
         ...this.queryParams,
         ...data,
         page: this.page,
-        size: this.size
+        size: this.size,
       })
-        .then(res => {
+        .then((res) => {
           this.tree = res.tree;
           this.data = res.rows;
           this.total = res.total;
@@ -65,11 +65,11 @@ export default {
       if (checked) {
         this.multipleSelection.push(data);
       } else {
-        const index = this.multipleSelection.findIndex(v => v.mid === data.mid);
+        const index = this.multipleSelection.findIndex((v) => v.mid === data.mid);
         this.multipleSelection.splice(index, 1);
       }
       this.$emit("check-change", this.multipleSelection, data, checked, indeterminate);
-    }
-  }
+    },
+  },
 };
 </script>

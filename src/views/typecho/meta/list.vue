@@ -1,23 +1,46 @@
 <template>
   <div>
     <el-card :body-style="{ padding: '4px' }" style="margin-bottom: 8px">
-      <el-form ref="form" :model="meta.form">
-        <el-table v-loading="meta.list.loading" size="small" border :data="meta.list.data" height="calc(100vh - 160px)" @selection-change="handleSelectionChange">
+      <el-form ref="form" size="mini" :model="meta.form">
+        <el-table
+          v-loading="meta.list.loading"
+          v-contextmenu:contextmenu
+          size="mini"
+          border
+          :data="meta.list.data"
+          height="calc(100vh - 160px)"
+          @selection-change="handleSelectionChange"
+          @row-dblclick="handleRowDblClick"
+          @row-contextmenu="(row) => ($data.row = row)"
+          @mousedown.native="() => ($data.row = null)"
+        >
           <el-table-column align="center" show-overflow-tooltip type="selection" width="44" />
           <el-table-column align="center" show-overflow-tooltip prop="name" label="名称" width="200">
-            <template slot="header" slot-scope="scope">
-              <el-input v-model="meta.form.name" class="text-center" name="name" size="small" clearable placeholder="名称" />
+            <template slot="header" slot-scope="{}">
+              <el-form-item prop="name">
+                <el-input v-model="meta.form.name" class="text-center" name="name" clearable placeholder="名称" />
+              </el-form-item>
             </template>
           </el-table-column>
           <el-table-column align="center" show-overflow-tooltip prop="slug" label="编码" width="200">
-            <template slot="header" slot-scope="scope">
-              <el-input v-model="meta.form.slug" class="text-center" size="small" clearable placeholder="编码" />
+            <template slot="header" slot-scope="{}">
+              <el-form-item prop="slug">
+                <el-input v-model="meta.form.slug" class="text-center" clearable placeholder="编码" />
+              </el-form-item>
             </template>
           </el-table-column>
           <el-table-column align="center" show-overflow-tooltip prop="type" label="类型" width="100" />
           <el-table-column align="center" show-overflow-tooltip prop="description" label="描述" />
-          <el-table-column align="center" show-overflow-tooltip prop="count" label="关联数" width="55" />
+          <el-table-column align="center" show-overflow-tooltip prop="count" label="关联数" width="65" />
           <el-table-column align="center" show-overflow-tooltip prop="order" label="权重" width="55" />
+          <template slot="empty">
+            <el-empty />
+          </template>
+          <template #append>
+            <v-contextmenu ref="contextmenu">
+              <v-contextmenu-item>编辑</v-contextmenu-item>
+            </v-contextmenu>
+          </template>
         </el-table>
       </el-form>
     </el-card>
@@ -34,7 +57,7 @@
           <el-button size="mini" type="warning" :disabled="meta.list.selection.length !== 1" @click="$router.push({ path: '/typecho/meta/info', query: { mid: meta.list.selection[0].mid } })">修改</el-button>
           <el-button size="mini" type="primary">导入</el-button>
           <el-button size="mini" type="warning">导出</el-button>
-          <el-button size="mini" @click="$router.back()">返回</el-button>
+          <el-button size="mini" @click="handleBack">返回</el-button>
         </el-col>
       </el-row>
     </el-card>
@@ -42,39 +65,29 @@
 </template>
 
 <script>
-import meta from "./meta-mixin";
+import { meta, metaViewTable } from "../mixins";
 export default {
-  mixins: [meta],
+  mixins: [meta, metaViewTable],
   data() {
-    return {};
-  },
-  created() {
-    this.meta.form.type = this.$route.query.type;
-    this.meta.form.parent = 0;
-    this.handleQuery();
+    return {
+      row: null,
+    };
   },
   methods: {
-    handleReset() {
-      // this.$refs.form.reset;
+    /**
+     * 右键表格行，显示菜单
+     */
+    handleRowContextMenu(row, column, event) {
+      // event.preventDefault()
+      this.row = row;
+      // this.$refs.contextmenu.show({ top: event.clientY, left: event.clientX });
     },
-    handleQuery() {
-      this.handleSelectMetaList();
-    },
-    handleSelectionChange(val) {
-      this.meta.list.selection = val;
-    },
-    handleSizeChange(val) {
-      this.meta.list.size = val;
-      this.handleQuery();
-    },
-    handleCurrentChange(val) {
-      this.meta.list.page = val;
-      this.handleQuery();
-    },
-    handleDelete() {
-      this.handleDeleteMetaList({ mids: this.meta.list.selection.map((v) => v.mid) }).then((res) => {
-        this.handleQuery();
-      });
+    /**
+     * 隐藏菜单
+     */
+    handleMouseDown() {
+      this.row = null;
+      // this.$refs.contextmenu.hide()
     },
   },
 };

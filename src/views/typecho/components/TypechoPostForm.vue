@@ -14,9 +14,7 @@
         </el-col>
 
         <el-form-item label="内容" prop="text" label-width="100%">
-          <template slot="label" style="width:100%;">
-            内容&nbsp;
-          </template>
+          <template slot="label" style="width: 100%"> 内容&nbsp; </template>
           <markdown-editor v-if="editor === 'markdownEditor'" ref="markdownEditor" v-model="value.text" :options="{ hideModeSwitch: true, previewStyle: 'tab' }" height="500px" />
           <json-editor v-if="editor === 'jsonEditor'" ref="jsonEditor" />
           <phpSpiderEditor v-if="editor === 'crawlerPostForm'" ref="crawlerPostForm" v-model="value.text" />
@@ -88,16 +86,16 @@ export default {
       type: Object,
       default() {
         return {};
-      }
+      },
     },
     editor: {
       type: String,
-      default: "markdownEditor"
+      default: "markdownEditor",
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -107,16 +105,16 @@ export default {
       tagOptions: [],
       prefix: "",
       categoryDepth: [],
-      categoryMultiSelection: []
+      categoryMultiSelection: [],
     };
   },
   computed: {
     json_parse() {
       return JSON.parse(this.post.text);
-    }
+    },
   },
   watch: {
-    prefix: function(val) {
+    prefix: function (val) {
       this.$refs.typechoMetaTree.handleQuery({ prefix: val, type: "category" });
       // 获取目录标识树
       if (this.prefix === "") {
@@ -125,37 +123,37 @@ export default {
         this.categoryDepth = [0, "children"];
       }
       // this.selectMetaTree({ prefix: val, type: "category" });
-    }
+    },
   },
   created() {
-    typechoOptionList({ prefix: "*" }).then(res => {
+    typechoOptionList({ prefix: "*" }).then((res) => {
       this.prefixOptions = res.rows;
     });
-    this.tagOptions = this.value.metas.filter(v => v.type === "tag");
-    this.tags = this.tagOptions.map(v => v.mid);
+    this.tagOptions = this.value.metas.filter((v) => v.type === "tag");
+    this.tags = this.tagOptions.map((v) => v.mid);
   },
   mounted() {
     this.$refs.typechoMetaTree.handleQuery();
-    this.$refs.typechoMetaTree.multipleSelection = this.value.metas.filter(v => v.type === "category");
+    this.$refs.typechoMetaTree.multipleSelection = this.value.metas.filter((v) => v.type === "category");
   },
   methods: {
     getValue() {
       const data = { ...this.value };
       data.type = "post";
       data.metas = [
-        ...this.tags.map(v => {
+        ...this.tags.map((v) => {
           if (typeof v === "number") {
             return {
-              mid: v
+              mid: v,
             };
           } else {
             return {
               type: "tag",
-              name: v
+              name: v,
             };
           }
         }),
-        ...this.$refs.typechoMetaTree.multipleSelection
+        ...this.$refs.typechoMetaTree.multipleSelection,
       ];
       data.text = this.$refs[this.contentEditor].getValue();
       return data;
@@ -164,11 +162,11 @@ export default {
       typechoMetaList({
         prefix: this.prefix,
         name,
-        type: "tag"
-      }).then(res => {
+        type: "tag",
+      }).then((res) => {
         this.tagOptions = res.rows;
       });
-    }
-  }
+    },
+  },
 };
 </script>

@@ -10,33 +10,33 @@
   </div>
 </template>
 <script>
-import { typechoMetaList } from '@/api/typecho'
+import { typechoMetaList } from "@/api/typecho";
 export default {
-  name: 'TypechoMetaTable',
+  name: "TypechoMetaTable",
   components: {},
   props: {
     queryParams: {
       type: Object,
       default() {
-        return {}
-      }
+        return {};
+      },
     },
     columns: {
       type: Array,
       default() {
         return [
-          { type: 'selection', width: 45 },
-          { prop: 'mid', label: '编号', width: 80 },
-          { prop: 'name', label: '名称', width: 180 },
-          { prop: 'slug', label: '别名', width: 180 },
-          { prop: 'type', label: '类型', width: 100 },
-          { prop: 'description', label: '描述' },
-          { prop: 'count', label: '关联', width: 55 },
-          { prop: 'order', label: '排序', width: 55 },
-          { prop: 'parent', label: '上一级', width: 80 }
-        ]
-      }
-    }
+          { type: "selection", width: 45 },
+          { prop: "mid", label: "编号", width: 80 },
+          { prop: "name", label: "名称", width: 180 },
+          { prop: "slug", label: "别名", width: 180 },
+          { prop: "type", label: "类型", width: 100 },
+          { prop: "description", label: "描述" },
+          { prop: "count", label: "关联", width: 55 },
+          { prop: "order", label: "排序", width: 55 },
+          { prop: "parent", label: "上一级", width: 80 },
+        ];
+      },
+    },
   },
   data() {
     return {
@@ -45,42 +45,42 @@ export default {
       page: 1,
       size: 10,
       total: 0,
-      multipleSelection: []
-    }
+      multipleSelection: [],
+    };
   },
   created() {},
   methods: {
     handleQuery(data = {}) {
-      this.loading = true
+      this.loading = true;
       return typechoMetaList({
         ...this.queryParams,
         ...data,
         page: this.page,
-        size: this.size
+        size: this.size,
       })
-        .then(res => {
-          this.data = res.rows
-          this.page = res.page
-          this.size = res.size
-          this.total = res.total
-          return Promise.resolve(res)
+        .then((res) => {
+          this.data = res.rows;
+          this.page = res.page;
+          this.size = res.size;
+          this.total = res.total;
+          return Promise.resolve(res);
         })
         .finally(() => {
-          this.loading = false
-        })
+          this.loading = false;
+        });
     },
     handleSelectionChange(val) {
-      this.multipleSelection = val
-      this.$emit('selection-change', val)
+      this.multipleSelection = val;
+      this.$emit("selection-change", val);
     },
     handleCurrentChange(val) {
-      this.page = val
-      this.handleQuery()
+      this.page = val;
+      this.handleQuery();
     },
     handleSizeChange(val) {
-      this.size = val
-      this.handleQuery()
-    }
-  }
-}
+      this.size = val;
+      this.handleQuery();
+    },
+  },
+};
 </script>

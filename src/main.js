@@ -8,6 +8,7 @@ import Element from "element-ui";
 import "./styles/element-variables.scss";
 // import enLang from 'element-ui/lib/locale/lang/en'// 如果使用中文语言包请默认支持，无需额外引入，请删除该依赖
 import LangnangElement from "@/components/ElementUI";
+import ElementView from "@/components/ElementView";
 
 import "@/styles/index.scss"; // global css
 
@@ -19,6 +20,7 @@ import "./icons"; // icon
 import "./permission"; // permission control
 import "./utils/error-log"; // error log
 import "./plugins/fontawesome";
+import "./plugins/contextmenu";
 
 import * as filters from "./filters"; // global filters
 
@@ -41,6 +43,7 @@ Vue.use(Element, {
 });
 
 Vue.use(LangnangElement);
+Vue.use(ElementView);
 // register global utility filters
 Object.keys(filters).forEach((key) => {
   Vue.filter(key, filters[key]);

@@ -188,7 +188,6 @@ const metaMethods = {
   },
 };
 export default {
-  name,
   data() {
     return {
       meta: {
@@ -301,7 +300,6 @@ export default {
       })
         .then((res) => {
           this.meta.info = { ...res };
-          this.meta.form = { ...res };
           return Promise.resolve(res);
         })
         .finally(() => {

@@ -7,7 +7,7 @@
     </el-table-column>
     <el-table-column slot="metas" prop="metas" label="标识" align="center">
       <template slot-scope="scope">
-        {{ scope.row.metas.map(v => v.name).join() }}
+        {{ scope.row.metas.map((v) => v.name).join() }}
       </template>
     </el-table-column>
     <el-table-column slot="fields" prop="fields" label="附加" width="50" align="center">
@@ -28,18 +28,18 @@ export default {
       type: Object,
       default() {
         return {};
-      }
+      },
     },
     columns: {
       type: Array,
       default() {
         return [{ type: "selection" }, { prop: "cid", label: "编号", width: 45 }, { prop: "title", label: "标题", width: 180 }, { slot: "modified" }, { slot: "metas" }, { slot: "fields" }];
-      }
+      },
     },
     callListFunc: {
       type: Function,
-      default: typechoPostList
-    }
+      default: typechoPostList,
+    },
   },
   data() {
     return {
@@ -48,7 +48,7 @@ export default {
       page: 1,
       size: 10,
       total: 0,
-      multipleSelection: []
+      multipleSelection: [],
     };
   },
   computed: {},
@@ -58,9 +58,9 @@ export default {
       return this.callListFunc({
         ...this.queryParams,
         page: this.page,
-        size: this.size
+        size: this.size,
       })
-        .then(res => {
+        .then((res) => {
           this.data = res.rows;
           this.page = res.page;
           this.size = res.size;
@@ -82,7 +82,7 @@ export default {
     handleSizeChange(val) {
       this.size = val;
       this.handleQuery();
-    }
-  }
+    },
+  },
 };
 </script>

@@ -8,7 +8,7 @@ const meta = {
   description: null,
   count: null,
   order: null,
-  parent: null
+  parent: null,
 };
 const metaData = {
   meta: { ...meta },
@@ -16,7 +16,7 @@ const metaData = {
     loading: false,
     data: [],
     total: 0,
-    multipleSelection: []
+    multipleSelection: [],
   },
   metaList: {
     func: typechoMetaList,
@@ -27,7 +27,7 @@ const metaData = {
     page: 1,
     size: 10,
     total: 0,
-    multipleSelection: []
+    multipleSelection: [],
   },
   metaTree: {
     func: typechoMetaTree,
@@ -36,13 +36,13 @@ const metaData = {
     data: [],
     props: { children: "children", label: "name" },
     total: 0,
-    multipleSelection: []
-  }
+    multipleSelection: [],
+  },
 };
 const metaComputed = {
   metaTree_defaultCheckedKeys() {
-    return this.metaTree.multipleSelection.map(v => v.mid);
-  }
+    return this.metaTree.multipleSelection.map((v) => v.mid);
+  },
 };
 const metaApis = {
   typechoMetaInsert,
@@ -51,7 +51,7 @@ const metaApis = {
   typechoMetaInfo,
   typechoMetaList,
   typechoMetaTree,
-  typechoMetaTypeList
+  typechoMetaTypeList,
 };
 // 标识相关方法
 const metaMethods = {
@@ -65,7 +65,7 @@ const metaMethods = {
     if (checked) {
       this.metaTree.multipleSelection.push(data);
     } else {
-      const index = this.metaTree.multipleSelection.findIndex(v => v.mid === data.mid);
+      const index = this.metaTree.multipleSelection.findIndex((v) => v.mid === data.mid);
       this.metaTree.multipleSelection.splice(index, 1);
     }
   },
@@ -74,7 +74,7 @@ const metaMethods = {
     if (!meta) {
       meta = this.meta;
     }
-    return typechoMetaInsert(meta).then(res => {
+    return typechoMetaInsert(meta).then((res) => {
       this.$message.success("新增成功");
       return Promise.resolve(res);
     });
@@ -84,16 +84,16 @@ const metaMethods = {
     if (!rows) {
       rows = this.metaList.multipleSelection;
     }
-    const mids = rows.map(v => v.mid);
+    const mids = rows.map((v) => v.mid);
 
     return this.$confirm("此操作将永久删除所选标识, 是否继续?", "提示", {
       confirmButtonText: "确定",
       cancelButtonText: "取消",
-      type: "warning"
+      type: "warning",
     })
       .then(() => {
         return new Promise((resolve, reject) => {
-          return typechoMetaDelete({ mids }).then(res => {
+          return typechoMetaDelete({ mids }).then((res) => {
             if (res.total === mids.length) {
               this.$message.success(`删除成功`);
             } else {
@@ -117,7 +117,7 @@ const metaMethods = {
     if (!meta) {
       meta = this.meta;
     }
-    return typechoMetaUpdate(meta).then(res => {
+    return typechoMetaUpdate(meta).then((res) => {
       this.$message.success("修改成功");
       return Promise.resolve(res);
     });
@@ -126,7 +126,7 @@ const metaMethods = {
     if (!mid) {
       mid = this.meta.mid;
     }
-    return typechoMetaInfo({ mids: [mid] }).then(res => {
+    return typechoMetaInfo({ mids: [mid] }).then((res) => {
       this.meta = res.rows[0];
       return Promise.resolve(res);
     });
@@ -137,9 +137,9 @@ const metaMethods = {
       .func({
         ...this.metaList.queryParams,
         page: this.metaList.page,
-        size: this.metaList.size
+        size: this.metaList.size,
       })
-      .then(res => {
+      .then((res) => {
         this.metaList.data = res.rows;
         this.metaList.page = res.page;
         this.metaList.size = res.size;
@@ -162,9 +162,9 @@ const metaMethods = {
     this.metaTree.loading = true;
     return this.metaTree
       .func({
-        ...this.metaTree.queryParams
+        ...this.metaTree.queryParams,
       })
-      .then(res => {
+      .then((res) => {
         this.metaTree.data = res.tree;
         this.metaTree.total = res.total;
         return Promise.resolve(res);
@@ -177,7 +177,7 @@ const metaMethods = {
   selectMetaTypeList(data) {
     this.metaTypeList.loading = true;
     return typechoMetaTypeList(data)
-      .then(res => {
+      .then((res) => {
         this.metaTypeList.data = res.rows;
         this.metaTypeList.total = res.total;
         return Promise.resolve(res);
@@ -185,19 +185,19 @@ const metaMethods = {
       .finally(() => {
         this.metaTypeList.loading = false;
       });
-  }
+  },
 };
 export default {
   data() {
     return {
-      ...metaData
+      ...metaData,
     };
   },
   computed: {
-    ...metaComputed
+    ...metaComputed,
   },
   methods: {
     ...metaApis,
-    ...metaMethods
-  }
+    ...metaMethods,
+  },
 };

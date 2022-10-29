@@ -3,14 +3,14 @@
     <el-row :gutter="20">
       <el-col v-for="(item, index) in summary" :key="index" :span="6">
         <el-card shadow="hover">
-          <div style="text-align:center">
+          <div style="text-align: center">
             {{ item.label }}
           </div>
         </el-card>
       </el-col>
       <el-col :span="6">
         <el-card shadow="hover">
-          <div style="text-align:center">
+          <div style="text-align: center">
             <i class="el-icon-plus" />
           </div>
         </el-card>
@@ -29,21 +29,21 @@ export default {
       typeList: [{ label: "服务器" }, { label: "数据库" }, { label: "账号" }, { label: "服务器" }, { label: "服务器" }],
       summary: [
         { key: "server", label: "服务器资源", total: 0 },
-        { key: "sql_server", label: "数据库", total: 0 }
-      ]
+        { key: "sql_server", label: "数据库", total: 0 },
+      ],
     };
   },
   created() {},
   methods: {
     handleQuery() {
-      typechoOptionInfo({ names: ["resourceSummary"] }).then(res => {
+      typechoOptionInfo({ names: ["resourceSummary"] }).then((res) => {
         if (res.total !== 0) {
           this.summary = JSON.parse(res.rows["resourceSummary"]);
         }
       });
     },
-    handleTabsEdit() {}
-  }
+    handleTabsEdit() {},
+  },
 };
 </script>
 <style lang="scss">

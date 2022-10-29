@@ -45,28 +45,28 @@ export default {
       type: Object,
       default() {
         return {};
-      }
+      },
     },
     items: {
       type: Array,
       default() {
         return [];
-      }
+      },
     },
     labelWidth: { type: String || Number, default: "" },
     size: { type: String, default: "mini" },
     inline: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
-    prefix: { type: String, default: "" }
+    prefix: { type: String, default: "" },
   },
   data() {
     return {
       parentOptions: [],
-      typeOptions: []
+      typeOptions: [],
     };
   },
   created() {
-    typechoMetaTypeList().then(res => {
+    typechoMetaTypeList().then((res) => {
       this.typeOptions = res.rows;
     });
     if (this.value.parent) {
@@ -75,7 +75,7 @@ export default {
   },
   methods: {
     handleQueryMetaInfo(mids) {
-      typechoMetaInfo({ mids }).then(res => {
+      typechoMetaInfo({ mids }).then((res) => {
         this.parentOptions = res.rows;
       });
     },
@@ -83,14 +83,14 @@ export default {
     handleQueryMetaList(name) {
       typechoMetaList({
         prefix: this.prefix,
-        name
-      }).then(res => {
+        name,
+      }).then((res) => {
         this.parentOptions = res.rows;
       });
     },
     resetFields() {
       this.$refs.form.resetFields();
-    }
-  }
+    },
+  },
 };
 </script>
