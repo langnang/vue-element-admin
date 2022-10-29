@@ -1,62 +1,62 @@
 import request from "@/utils/request";
 
-export const crawlerPostTest = data => {
+export const crawlerPostTest = (data) => {
   return request(
     {
-      url: process.env.VUE_APP_PHP_API + "/crawler/test",
+      url: "/api/crawler/test",
       method: "POST",
-      data
+      data,
     },
     { loading: true }
   );
 };
-export const crawlerPostInsert = data => {
+export const crawlerPostInsert = (data) => {
   return request(
     {
-      url: process.env.VUE_APP_PHP_API + "/crawler/insert",
+      url: "/api/crawler/insert",
       method: "POST",
-      data
+      data,
     },
     { loading: true }
   );
 };
-export const crawlerPostDelete = data => {
+export const crawlerPostDelete = (data) => {
   return request(
     {
-      url: process.env.VUE_APP_PHP_API + "/crawler/delete",
+      url: "/api/crawler/delete",
       method: "POST",
-      data
+      data,
     },
     { loading: true }
   );
 };
-export const crawlerPostUpdate = data => {
+export const crawlerPostUpdate = (data) => {
   return request(
     {
-      url: process.env.VUE_APP_PHP_API + "/crawler/update",
+      url: "/api/crawler/update",
       method: "POST",
-      data
+      data,
     },
     { loading: true }
   );
 };
-export const crawlerPostList = data => {
+export const crawlerPostList = (data) => {
   return request(
     {
-      url: process.env.VUE_APP_PHP_API + "/crawler/list",
+      url: "/api/crawler/list",
       method: "POST",
-      data
+      data,
     },
     { loading: true }
   );
 };
 
-export const crawlerPostInfo = data => {
+export const crawlerPostInfo = (data) => {
   return request(
     {
-      url: process.env.VUE_APP_PHP_API + "/crawler/info",
+      url: "/api/crawler/info",
       method: "POST",
-      data
+      data,
     },
     { loading: true }
   );

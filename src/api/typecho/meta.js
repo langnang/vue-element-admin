@@ -3,9 +3,9 @@ import request from "@/utils/request";
 export function typechoMetaInsert(data) {
   return request(
     {
-      url: process.env.VUE_APP_PHP_API + "/typecho/meta/insert",
+      url: "/api/typecho/meta/insert",
       method: "POST",
-      data
+      data,
     },
     { loading: true }
   );
@@ -13,9 +13,9 @@ export function typechoMetaInsert(data) {
 export function typechoMetaDelete(data) {
   return request(
     {
-      url: process.env.VUE_APP_PHP_API + "/typecho/meta/delete",
+      url: "/api/typecho/meta/delete",
       method: "POST",
-      data
+      data,
     },
     { loading: true }
   );
@@ -23,9 +23,9 @@ export function typechoMetaDelete(data) {
 export function typechoMetaUpdate(data) {
   return request(
     {
-      url: process.env.VUE_APP_PHP_API + "/typecho/meta/update",
+      url: "/api/typecho/meta/update",
       method: "POST",
-      data
+      data,
     },
     { loading: true }
   );
@@ -33,9 +33,9 @@ export function typechoMetaUpdate(data) {
 export function typechoMetaInfo(data) {
   return request(
     {
-      url: process.env.VUE_APP_PHP_API + "/typecho/meta/info",
+      url: "/api/typecho/meta/info",
       method: "POST",
-      data
+      data,
     },
     { loading: true }
   );
@@ -43,9 +43,9 @@ export function typechoMetaInfo(data) {
 export function typechoMetaList(data) {
   return request(
     {
-      url: process.env.VUE_APP_PHP_API + "/typecho/meta/list",
-      method: "POST",
-      data
+      url: "/api/typecho/meta/list",
+      method: "post",
+      data,
     },
     { loading: true }
   );
@@ -53,9 +53,9 @@ export function typechoMetaList(data) {
 export function typechoMetaTree(data) {
   return request(
     {
-      url: process.env.VUE_APP_PHP_API + "/typecho/meta/tree",
+      url: "/api/typecho/meta/tree",
       method: "POST",
-      data
+      data,
     },
     { loading: true }
   );
@@ -64,9 +64,9 @@ export function typechoMetaTree(data) {
 export function typechoMetaTypeList(data) {
   return request(
     {
-      url: process.env.VUE_APP_PHP_API + "/typecho/meta/type",
+      url: "/api/typecho/meta/type",
       method: "POST",
-      data
+      data,
     },
     { loading: true }
   );

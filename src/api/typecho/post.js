@@ -2,9 +2,9 @@ import request from "@/utils/request";
 export function typechoPostInsert(data) {
   return request(
     {
-      url: process.env.VUE_APP_PHP_API + "/typecho/post/insert",
+      url: "/api/typecho/post/insert",
       method: "POST",
-      data
+      data,
     },
     { loading: true }
   );
@@ -12,9 +12,9 @@ export function typechoPostInsert(data) {
 export function typechoPostDelete(data) {
   return request(
     {
-      url: process.env.VUE_APP_PHP_API + "/typecho/post/delete",
+      url: "/api/typecho/post/delete",
       method: "POST",
-      data
+      data,
     },
     { loading: true }
   );
@@ -22,9 +22,9 @@ export function typechoPostDelete(data) {
 export function typechoPostUpdate(data) {
   return request(
     {
-      url: process.env.VUE_APP_PHP_API + "/typecho/post/update",
+      url: "/api/typecho/post/update",
       method: "POST",
-      data
+      data,
     },
     { loading: true }
   );
@@ -32,9 +32,9 @@ export function typechoPostUpdate(data) {
 export function typechoPostInfo(data) {
   return request(
     {
-      url: process.env.VUE_APP_PHP_API + "/typecho/post/info",
+      url: "/api/typecho/post/info",
       method: "POST",
-      data
+      data,
     },
     { loading: true }
   );
@@ -42,9 +42,9 @@ export function typechoPostInfo(data) {
 export function typechoPostList(data) {
   return request(
     {
-      url: process.env.VUE_APP_PHP_API + "/typecho/post/list",
+      url: "/api/typecho/post/list",
       method: "POST",
-      data
+      data,
     },
     { loading: true }
   );

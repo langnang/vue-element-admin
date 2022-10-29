@@ -3,9 +3,9 @@ import request from "@/utils/request";
 export function typechoOptionInfo(data) {
   return request(
     {
-      url: process.env.VUE_APP_PHP_API + "/typecho/option/info",
+      url: "/api/typecho/option/info",
       method: "POST",
-      data
+      data,
     },
     { loading: true }
   );
@@ -13,9 +13,9 @@ export function typechoOptionInfo(data) {
 export function typechoOptionList(data) {
   return request(
     {
-      url: process.env.VUE_APP_PHP_API + "/typecho/option/list",
+      url: "/api/typecho/option/list",
       method: "POST",
-      data
+      data,
     },
     { loading: true }
   );
@@ -23,9 +23,9 @@ export function typechoOptionList(data) {
 export function typechoOptionReplace(data) {
   return request(
     {
-      url: process.env.VUE_APP_PHP_API + "/typecho/option/replace",
+      url: "/api/typecho/option/replace",
       method: "POST",
-      data
+      data,
     },
     { loading: true }
   );
