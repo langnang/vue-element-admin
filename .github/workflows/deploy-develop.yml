@@ -13,8 +13,11 @@ jobs:
       - name: 🚚 Get latest code
         uses: actions/checkout@v2
 
-      - name: Install composer dependencies
-        run: composer install
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
 
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
@@ -25,7 +28,6 @@ jobs:
           username: b32_28202196
           # ftp password
           password: ${{ secrets.ftp_password }}
-
           local-dir: ./dist/
           # Path to upload to on the server. Must end with trailing slash /
           server-dir: /langnang-develop.ml/htdocs/
