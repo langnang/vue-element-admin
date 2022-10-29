@@ -1,5 +1,5 @@
 <script>
-import { selectContentList, selectMetaCount } from "@/api/typecho";
+import { deleteContentList, selectContentList, selectMetaCount } from "@/api/typecho";
 import ElViewTable from "@/components/ElementView/ElViewTable.vue";
 export default {
   name: "TypechoContentList",
@@ -8,6 +8,7 @@ export default {
     return {
       form: {
         key: "cid",
+        deleteOperateKey: "cids",
       },
       list: {
         columns: [
@@ -51,6 +52,7 @@ export default {
     handleBack() {
       this.$router.push({ path: "/typecho/content" });
     },
+    requestDeleteList: deleteContentList,
     requestSelectList: selectContentList,
   },
 };

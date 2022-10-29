@@ -45,8 +45,8 @@
         <el-col :span="-1" style="float: right">
           <el-button size="mini" type="success" @click="handleQuery">查询</el-button>
           <el-button size="mini" type="info" @click="handleReset('form')">重置</el-button>
-          <el-button size="mini" type="primary" @click="handleGo({ path: '/typecho/content/info' })">新增</el-button>
-          <el-button size="mini" type="danger" :disabled="list.selection.length === 0">删除</el-button>
+          <el-button size="mini" type="primary" @click="handleGo('insertItem')">新增</el-button>
+          <el-button size="mini" type="danger" :disabled="list.selection.length === 0" @click="handleDeleteList">删除</el-button>
           <el-button size="mini" type="warning" :disabled="list.selection.length !== 1" @click="handleGo('selectItem')">修改</el-button>
           <el-button size="mini" type="primary">导入</el-button>
           <el-button size="mini" type="warning">导出</el-button>

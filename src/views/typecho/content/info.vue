@@ -14,6 +14,7 @@ export default {
             label: "内容",
             bind: {
               type: "textarea",
+              autosize: true,
             },
           },
         ],

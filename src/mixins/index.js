@@ -34,7 +34,9 @@ export default {
       },
       // 切换路由
       to: {
-        insertItem: {},
+        insertItem: () => ({
+          path: this.$route.path.split("/").slice(0, -1).join("/") + "/info",
+        }),
         insertList: {},
         deleteItem: {},
         deleteList: {},
@@ -135,16 +137,13 @@ export default {
         type: "warning",
       }).then(() => {
         this.list.loading = true;
-        return typechoMetaDelete({
-          ...this.form.data,
-          ...data,
-        })
+        return this.requestDeleteList({ [this.form.deleteOperateKey]: this.list.selection.map((v) => v[this.form.key]) })
           .then((res) => {
             this.$message.success(`删除成功`);
-            return Promise.resolve(res);
+            return this.handleSelectList();
           })
           .finally(() => {
-            this.form.loading = false;
+            this.list.loading = false;
           });
       });
     },
@@ -163,6 +162,7 @@ export default {
         });
     },
     handleSelectList(data = {}, showMsg = true) {
+      console.log("🚀 ~ file: index.js ~ line 168 ~ handleSelectList ~ handleSelectList");
       this.list.loading = true;
       return this.requestSelectList({
         ...this.form.data,
@@ -171,6 +171,7 @@ export default {
         ...data,
       })
         .then((res) => {
+          console.log("🚀 ~ file: index.js ~ line 177 ~ .then ~ res", res);
           this.list.data = res.rows;
           this.list.total = res.total;
           this.list.page = res.page;
