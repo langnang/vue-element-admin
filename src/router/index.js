@@ -5,6 +5,7 @@ Vue.use(Router);
 
 /* Layout */
 import Layout from "@/layout";
+import LayoutMain from "@/layout/components/AppMain";
 
 /* Router Modules */
 import componentsRouter from "./modules/components";
@@ -141,18 +142,18 @@ export const asyncRoutes = [
       },
     ],
   },
-  {
-    path: "/meta",
-    component: Layout,
-    children: [
-      {
-        path: "index",
-        component: () => import("@/views/meta/index"),
-        name: "Meta",
-        meta: { title: "Meta", icon: "icon", noCache: true },
-      },
-    ],
-  },
+  // {
+  //   path: "/meta",
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: "index",
+  //       component: () => import("@/views/meta/index"),
+  //       name: "Meta",
+  //       meta: { title: "Meta", icon: "icon", noCache: true },
+  //     },
+  //   ],
+  // },
   {
     path: "/typecho",
     component: Layout,
@@ -160,10 +161,33 @@ export const asyncRoutes = [
     meta: { title: "Typecho", icon: "icon" },
     children: [
       {
-        path: "category",
-        component: () => import("@/views/typecho/category/index"),
-        name: "Category",
-        meta: { title: "Category", noCache: true },
+        path: "meta",
+        // name: "Typecho Meta",
+        component: LayoutMain,
+        // redirect: "/typecho/meta/index",
+        // meta: { title: "Meta", noCache: true },
+        children: [
+          {
+            path: "",
+            component: () => import("@/views/typecho/category/index"),
+            name: "Typecho Meta",
+            meta: { title: "Meta", noCache: true },
+          },
+          {
+            path: "list",
+            component: () => import("@/views/typecho/category/list"),
+            name: "Typecho Meta List",
+            meta: { title: "Meta List", noCache: true },
+            hidden: true,
+          },
+          {
+            path: "info",
+            component: () => import("@/views/typecho/category/info"),
+            name: "Typecho Meta Info",
+            meta: { title: "Meta Info", noCache: true },
+            hidden: true,
+          },
+        ],
       },
       {
         path: "content",

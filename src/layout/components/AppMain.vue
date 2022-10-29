@@ -30,6 +30,9 @@ export default {
   position: relative;
   overflow: hidden;
   padding: 10px;
+  & > .app-main {
+    padding: 0;
+  }
 }
 
 .fixed-header + .app-main {

@@ -86,3 +86,36 @@
 .el-card__body {
   padding: 8px;
 }
+
+.el-table {
+  &.el-table--small {
+    .el-table__header-wrapper {
+      .el-table__cell {
+        padding: 4px 0;
+      }
+
+      .cell {
+        padding: 0 4px;
+        line-height: 30px;
+      }
+    }
+  }
+
+}
+
+
+.el-input {
+  &.text-center {
+    .el-input__inner {
+      text-align: center;
+    }
+  }
+}
+
+.el-select {
+  width: 100%;
+}
+
+.el-scrollbar__wrap:not(.el-select-dropdown__wrap) {
+  overflow-x: hidden;
+}
