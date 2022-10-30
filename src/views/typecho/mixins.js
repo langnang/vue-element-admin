@@ -121,6 +121,7 @@ export const meta = {
       })
         .then((res) => {
           this.meta.info = { ...res };
+          this.meta.form = { ...res };
           return Promise.resolve(res);
         })
         .finally(() => {

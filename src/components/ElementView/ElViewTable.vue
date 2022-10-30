@@ -12,6 +12,9 @@
                   </component>
                 </el-form-item>
               </template>
+              <template :slot="col.type ? false : 'default'" slot-scope="{ row }">
+                {{ col.filter ? col.filter(row[col.prop], row, col) : row[col.prop] }}
+              </template>
             </el-table-column>
           </slot>
           <slot />

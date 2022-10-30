@@ -236,6 +236,18 @@ export const asyncRoutes = [
 
   /** when your routing map is too long, you can split it into small modules **/
   require("./modules/components")["default"],
+  {
+    path: "/logger",
+    component: Layout,
+    children: [
+      {
+        path: "index",
+        component: () => import("@/views/logger/index"),
+        name: "Logger",
+        meta: { title: "Logger", icon: "bug", noCache: true },
+      },
+    ],
+  },
   chartsRouter,
   nestedRouter,
   tableRouter,
