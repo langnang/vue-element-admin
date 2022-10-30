@@ -2,7 +2,21 @@
   <div>
     <el-card :body-style="{ padding: '4px' }" style="margin-bottom: 8px">
       <el-form ref="form" size="mini" :model="form.data">
-        <el-table v-loading="list.loading" v-contextmenu:contextmenu size="mini" border :data="list.data" height="calc(100vh - 160px)" @selection-change="handleSelectionChange" @row-dblclick="handleRowDblClick" @row-contextmenu="handleRowContextMenu" @mousedown.native="handleMouseDown">
+        <el-table
+          v-loading="list.loading"
+          v-contextmenu:contextmenu
+          size="mini"
+          border
+          :data="list.data"
+          height="calc(100vh - 160px)"
+          @selection-change="handleSelectionChange"
+          @cell-click="handleCellClick"
+          @cell-dblclick="handleCellDblClick"
+          @row-click="handleRowClick"
+          @row-dblclick="handleRowDblClick"
+          @row-contextmenu="handleRowContextMenu"
+          @mousedown.native="handleMouseDown"
+        >
           <slot v-for="(col, index) in list.columns" :name="col.slot ? col.slot : 'el-table-column-' + index">
             <el-table-column align="center" show-overflow-tooltip :type="col.type" :prop="col.prop" :label="col.label" :width="col.width">
               <template :slot="col.slotHeader ? 'header' : false" slot-scope="{}">

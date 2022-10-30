@@ -1,8 +1,9 @@
 <script>
-import { selectLoggerList } from "@/api/logger";
+import { selectLoggerList, selectLoggerCount } from "@/api/logger";
 import { selectMetaCount } from "@/api/typecho";
 import ElViewTable from "@/components/ElementView/ElViewTable.vue";
 import moment from "moment";
+import clipboard from "@/utils/clipboard";
 export default {
   extends: ElViewTable,
   data() {
@@ -23,7 +24,8 @@ export default {
             label: "地址",
             width: 160,
             slotHeader: {
-              component: "el-input",
+              component: "el-select",
+              options: [],
             },
           },
           {
@@ -56,6 +58,10 @@ export default {
     };
   },
   created() {
+    selectLoggerCount({ columns: ["channel"] }).then((res) => {
+      this.list.columns[this.list.columns.findIndex((v) => v.prop === "channel")].slotHeader.options = res.rows.map((v) => ({ ...v, value: v.channel }));
+    });
+
     selectMetaCount({ type: "option", slug: "log.level", columns: ["mid", "name", "description"] }).then((res) => {
       this.list.columns[this.list.columns.findIndex((v) => v.prop === "level")].slotHeader.options = res.rows.map((v) => ({ ...v, value: v.name, label: v.description }));
     });
@@ -63,6 +69,9 @@ export default {
   methods: {
     handleBack() {
       this.$router.push({ path: "/typecho/content" });
+    },
+    handleRowClick(row, column, event) {
+      clipboard(row.value, event);
     },
     requestSelectList: selectLoggerList,
   },

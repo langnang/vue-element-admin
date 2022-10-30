@@ -91,12 +91,9 @@ export default {
     handleUploadSuccess() {},
     handleUploadHttpRequest() {},
     // table
-    handleClickRow() {},
-    handleClickCell() {},
-    handleDblClickCell() {},
-    handleSelectionChange(val) {
-      this.list.selection = val;
-    },
+    handleCellClick() {},
+    handleCellDblClick() {},
+    handleRowClick() {},
     handleRowDblClick(row, column, event) {
       this.list.row = row;
       this.handleGo("updateItem");
@@ -108,6 +105,9 @@ export default {
       // event.preventDefault()
       this.list.row = row;
       // this.$refs.contextmenu.show({ top: event.clientY, left: event.clientX });
+    },
+    handleSelectionChange(val) {
+      this.list.selection = val;
     },
     //
 
