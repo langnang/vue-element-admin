@@ -13,6 +13,11 @@ export default {
         bind: {},
         // 数据主键
         key: "",
+        // 数据删除参数名
+        deleteOperateKey: "",
+        upload: {
+          action: "",
+        },
       },
       info: {},
       list: {
@@ -37,20 +42,21 @@ export default {
         insertItem: () => ({
           path: this.$route.path.split("/").slice(0, -1).join("/") + "/info",
         }),
-        insertList: {},
-        deleteItem: {},
-        deleteList: {},
-        updateItem: {},
-        updateList: {},
+        insertList: () => ({}),
+        deleteItem: () => ({}),
+        deleteList: () => ({}),
+        updateItem: () => ({
+          path: this.$route.path.split("/").slice(0, -1).join("/") + "/info",
+          query: { [this.form.key]: (this.list.row || this.list.selection[0])[this.form.key] },
+        }),
+        updateList: () => ({}),
         selectItem: () => ({
           path: this.$route.path.split("/").slice(0, -1).join("/") + "/info",
-          query: { [this.form.key]: this.list.selection[0][this.form.key] },
+          query: { [this.form.key]: (this.list.row || this.list.selection[0])[this.form.key] },
         }),
-        selectList: {
-          query: () => {},
-        },
-        selectTree: {},
-        selectCount: {},
+        selectList: () => ({}),
+        selectTree: () => ({}),
+        selectCount: () => ({}),
       },
     };
   },
@@ -78,6 +84,12 @@ export default {
         }
       });
     },
+    // upload
+    handleUploadPreview() {},
+    handleUploadRemove() {},
+    handleUploadExceed() {},
+    handleUploadSuccess() {},
+    handleUploadHttpRequest() {},
     // table
     handleClickRow() {},
     handleClickCell() {},
@@ -85,13 +97,16 @@ export default {
     handleSelectionChange(val) {
       this.list.selection = val;
     },
-    handleRowDblClick() {},
+    handleRowDblClick(row, column, event) {
+      this.list.row = row;
+      this.handleGo("updateItem");
+    },
     /**
      * 右键表格行，显示菜单
      */
     handleRowContextMenu(row, column, event) {
       // event.preventDefault()
-      this.row = row;
+      this.list.row = row;
       // this.$refs.contextmenu.show({ top: event.clientY, left: event.clientX });
     },
     //
@@ -110,7 +125,7 @@ export default {
      * 隐藏菜单
      */
     handleMouseDown() {
-      this.row = null;
+      this.list.row = null;
       // this.$refs.contextmenu.hide()
     },
     // actions
@@ -137,7 +152,7 @@ export default {
         type: "warning",
       }).then(() => {
         this.list.loading = true;
-        return this.requestDeleteList({ [this.form.deleteOperateKey]: this.list.selection.map((v) => v[this.form.key]) })
+        return this.requestDeleteList({ ...data, [this.form.deleteOperateKey]: [...this.list.selection, this.list.row].map((v) => v[this.form.key]) })
           .then((res) => {
             this.$message.success(`删除成功`);
             return this.handleSelectList();
@@ -162,7 +177,6 @@ export default {
         });
     },
     handleSelectList(data = {}, showMsg = true) {
-      console.log("🚀 ~ file: index.js ~ line 168 ~ handleSelectList ~ handleSelectList");
       this.list.loading = true;
       return this.requestSelectList({
         ...this.form.data,
@@ -171,7 +185,6 @@ export default {
         ...data,
       })
         .then((res) => {
-          console.log("🚀 ~ file: index.js ~ line 177 ~ .then ~ res", res);
           this.list.data = res.rows;
           this.list.total = res.total;
           this.list.page = res.page;
@@ -204,12 +217,13 @@ export default {
         this.loading = true;
       });
     },
-    handleExportItem() {},
+    handleExportList() {},
 
     // apis
     requestInsertItem() {
       return Promise.resolve({});
     },
+    requestImportItem() {},
     requestDeleteItem() {
       return Promise.resolve({});
     },
@@ -231,5 +245,6 @@ export default {
     requestSelectCount() {
       return Promise.resolve({ rows: [], count_total: 0, total: 0 });
     },
+    requestExportList() {},
   },
 };

@@ -3,7 +3,7 @@
     <aside>
       <el-input v-model="input" clearable />
     </aside>
-    <el-tabs type="border-card">
+    <el-tabs type="border-card" stretch>
       <el-tab-pane label="Icons">
         <div class="grid">
           <div v-for="item of svgIcons.filter((v) => v.indexOf(input) > -1)" :key="item" @click="handleClipboard(generateIconCode(item), $event)">

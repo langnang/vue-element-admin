@@ -9,6 +9,10 @@ export default {
       form: {
         key: "cid",
         deleteOperateKey: "cids",
+        upload: {
+          action: "http://localhost:9090/?/typecho/content/import",
+          accept: ".xlsx",
+        },
       },
       list: {
         columns: [
