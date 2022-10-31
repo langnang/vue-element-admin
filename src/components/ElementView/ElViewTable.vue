@@ -9,12 +9,12 @@
           border
           :data="list.data"
           height="calc(100vh - 160px)"
-          @selection-change="handleSelectionChange"
-          @cell-click="handleCellClick"
-          @cell-dblclick="handleCellDblClick"
-          @row-click="handleRowClick"
-          @row-dblclick="handleRowDblClick"
-          @row-contextmenu="handleRowContextMenu"
+          @selection-change="handleTableSelectionChange"
+          @cell-click="handleTableCellClick"
+          @cell-dblclick="handleTableCellDblClick"
+          @row-click="handleTableRowClick"
+          @row-dblclick="handleTableRowDblClick"
+          @row-contextmenu="handleTableRowContextMenu"
           @mousedown.native="handleMouseDown"
         >
           <slot v-for="(col, index) in list.columns" :name="col.slot ? col.slot : 'el-table-column-' + index">
@@ -39,7 +39,7 @@
             <v-contextmenu ref="contextmenu">
               <v-contextmenu-item @click="handleGo('insertItem')"><i class="el-icon-plus" />&nbsp;新增</v-contextmenu-item>
               <v-contextmenu-item :disabled="!list.row" @click="handleGo('updateItem')"><i class="el-icon-edit" />&nbsp;修改</v-contextmenu-item>
-              <v-contextmenu-item :disabled="!list.row" @click="handleDeleteList"><i class="el-icon-delete" />&nbsp;删除</v-contextmenu-item>
+              <v-contextmenu-item :disabled="!list.row" @click="handleOperateDeleteList({})"><i class="el-icon-delete" />&nbsp;删除</v-contextmenu-item>
               <v-contextmenu-item :disabled="!list.row" @click="handleGo('selectItem')"><i class="el-icon-info" />&nbsp;详情</v-contextmenu-item>
             </v-contextmenu>
           </template>
@@ -49,13 +49,13 @@
     <el-card ref="footer" :body-style="{ padding: '4px 8px' }">
       <el-row :gutter="8">
         <el-col :span="-1">
-          <el-pagination :current-page="list.page" :page-sizes="[10, 20, 50, 100]" :page-size="list.size" layout="total, sizes, prev, pager, next, jumper" :total="list.total" style="padding: 0" @size-change="handleSizeChange" @current-change="handleCurrentChange" />
+          <el-pagination :current-page="list.page" :page-sizes="[10, 20, 50, 100]" :page-size="list.size" layout="total, sizes, prev, pager, next, jumper" :total="list.total" style="padding: 0" @size-change="handlePaginationSizeChange" @current-change="handlePaginationCurrentChange" />
         </el-col>
         <el-col :span="-1" style="float: right">
           <el-button size="mini" type="success" @click="handleQuery">查询</el-button>
           <el-button size="mini" type="info" @click="handleReset('form')">重置</el-button>
           <el-button size="mini" type="primary" @click="handleGo('insertItem')">新增</el-button>
-          <el-button size="mini" type="danger" :disabled="list.selection.length === 0" @click="handleDeleteList">删除</el-button>
+          <el-button size="mini" type="danger" :disabled="list.selection.length === 0" @click="handleOperateDeleteList">删除</el-button>
           <el-button size="mini" type="warning" :disabled="list.selection.length !== 1" @click="handleGo('updateItem')">修改</el-button>
           <el-upload class="el-button el-button--text" disabled v-bind="form.upload" style="padding: 0; border: 0" @http-request="handleUploadHttpRequest">
             <el-button size="mini" type="primary" disabled>导入</el-button>
@@ -92,7 +92,7 @@ export default {
         return t;
       }, {}),
     };
-    this.handleSelectList();
+    this.handleOperateSelectList();
   },
 };
 </script>

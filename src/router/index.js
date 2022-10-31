@@ -9,7 +9,7 @@ import LayoutMain from "@/layout/components/AppMain";
 
 /* Router Modules */
 import componentsRouter from "./modules/components";
-import chartsRouter from "./modules/charts";
+// import chartsRouter from "./modules/charts";
 import tableRouter from "./modules/table";
 import nestedRouter from "./modules/nested";
 
@@ -142,18 +142,27 @@ export const asyncRoutes = [
       },
     ],
   },
-  // {
-  //   path: "/meta",
-  //   component: Layout,
-  //   children: [
-  //     {
-  //       path: "index",
-  //       component: () => import("@/views/meta/index"),
-  //       name: "Meta",
-  //       meta: { title: "Meta", icon: "icon", noCache: true },
-  //     },
-  //   ],
-  // },
+  {
+    path: "/meta",
+    component: Layout,
+    name: "Meta",
+    meta: { title: "Meta", icon: "icon", noCache: true },
+    children: [
+      {
+        path: "list",
+        component: () => import("@/views/meta/list"),
+        name: "Meta List",
+        meta: { title: "Meta List", icon: "icon", noCache: true },
+      },
+      {
+        path: "info",
+        component: () => import("@/views/meta/info"),
+        name: "Meta Info",
+        meta: { title: "Meta Info", icon: "icon", noCache: true },
+        hidden: true,
+      },
+    ],
+  },
   require("./modules/typecho")["default"],
 
   {

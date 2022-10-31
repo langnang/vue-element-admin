@@ -36,7 +36,7 @@ export default {
   created() {
     if (this.$route.query[this.form.key]) {
       this.form.data[this.form.key] = this.$route.query[this.form.key];
-      this.handleSelectItem();
+      this.handleOperateSelectItem();
     }
   },
   methods: {
@@ -44,12 +44,12 @@ export default {
       this.$refs[name].validate((valid) => {
         if (valid) {
           if (this.form.data[this.form.key]) {
-            this.handleUpdateItem();
+            this.handleOperateUpdateItem();
           } else {
-            this.handleInsertItem().then((res) => {
+            this.handleOperateInsertItem().then((res) => {
               this.form.data = { ...res };
               this.$router.push({ query: { [this.form.key]: res[this.form.key] } });
-              this.handleSelectItem({ [this.form.key]: res[this.form.key] });
+              this.handleOperateSelectItem({ [this.form.key]: res[this.form.key] });
             });
           }
         } else {

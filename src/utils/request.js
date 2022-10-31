@@ -85,4 +85,6 @@ service.interceptors.response.use(
 
 export default service;
 
+export const get = service.get;
 export const post = service.post;
+export const put = service.put;

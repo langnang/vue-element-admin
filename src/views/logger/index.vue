@@ -18,7 +18,14 @@ export default {
       },
       list: {
         columns: [
-          { type: "selection", width: 45 },
+          {
+            prop: "uuid",
+            label: "通用唯一标识符",
+            width: 240,
+            slotHeader: {
+              component: "el-input",
+            },
+          },
           {
             prop: "channel",
             label: "地址",
@@ -26,6 +33,9 @@ export default {
             slotHeader: {
               component: "el-select",
               options: [],
+              bind: {
+                filterable: true,
+              },
             },
           },
           {
@@ -46,14 +56,24 @@ export default {
           {
             prop: "var",
             label: "键",
-            width: 150,
+            width: 180,
+            slotHeader: {
+              component: "el-select",
+              options: [],
+              bind: {
+                filterable: true,
+              },
+            },
           },
           {
             prop: "value",
             label: "值",
           },
-          { prop: "time", label: "时间", width: 160, filter: (val) => moment(val * 1000).format("YYYY-MM-DD HH:mm:ss") },
+          { prop: "timestamp", label: "时间", width: 160, filter: (val) => moment(val).format("YYYY-MM-DD HH:mm:ss.SSS") },
         ],
+      },
+      to: {
+        updateItem: () => ({}),
       },
     };
   },
@@ -61,7 +81,9 @@ export default {
     selectLoggerCount({ columns: ["channel"] }).then((res) => {
       this.list.columns[this.list.columns.findIndex((v) => v.prop === "channel")].slotHeader.options = res.rows.map((v) => ({ ...v, value: v.channel }));
     });
-
+    selectLoggerCount({ columns: ["var"] }).then((res) => {
+      this.list.columns[this.list.columns.findIndex((v) => v.prop === "var")].slotHeader.options = res.rows.map((v) => ({ ...v, value: v.var }));
+    });
     selectMetaCount({ type: "option", slug: "log.level", columns: ["mid", "name", "description"] }).then((res) => {
       this.list.columns[this.list.columns.findIndex((v) => v.prop === "level")].slotHeader.options = res.rows.map((v) => ({ ...v, value: v.name, label: v.description }));
     });
@@ -70,8 +92,8 @@ export default {
     handleBack() {
       this.$router.push({ path: "/typecho/content" });
     },
-    handleRowClick(row, column, event) {
-      clipboard(row.value, event);
+    handleTableRowDblClick(row, column, event) {
+      clipboard(row[column.property], event);
     },
     requestSelectList: selectLoggerList,
   },

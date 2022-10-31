@@ -1,6 +1,12 @@
 /**
  * 通用 Mixin
  */
+const formMixin = {};
+const tableMixin = {};
+
+const elTableMethods = {};
+const elPaginationMethods = {};
+
 export default {
   data() {
     return {
@@ -70,7 +76,7 @@ export default {
     // form
     handleQuery() {
       this.list.page = 1;
-      this.handleSelectList();
+      this.handleOperateSelectList();
     },
     handleReset(name) {
       this.$refs[name].resetFields();
@@ -91,35 +97,45 @@ export default {
     handleUploadSuccess() {},
     handleUploadHttpRequest() {},
     // table
-    handleCellClick() {},
-    handleCellDblClick() {},
-    handleRowClick() {},
-    handleRowDblClick(row, column, event) {
+    // 当某个单元格被点击时会触发该事件
+    handleTableCellClick() {},
+    // 当某个单元格被双击击时会触发该事件
+    handleTableCellDblClick() {},
+    // 当某一行被点击时会触发该事件
+    handleTableRowClick(row, column, event) {
       this.list.row = row;
       this.handleGo("updateItem");
     },
-    /**
-     * 右键表格行，显示菜单
-     */
-    handleRowContextMenu(row, column, event) {
+    // 当某一行被双击时会触发该事件
+    handleTableRowDblClick(row, column, event) {},
+    //  当某一行被鼠标右键点击时会触发该事件
+    handleTableRowContextMenu(row, column, event) {
       // event.preventDefault()
+      // 右键表格行，显示菜单
       this.list.row = row;
       // this.$refs.contextmenu.show({ top: event.clientY, left: event.clientX });
     },
-    handleSelectionChange(val) {
+    // 当选择项发生变化时会触发该事件
+    handleTableSelectionChange(val) {
       this.list.selection = val;
     },
     //
 
     // pagination
-    handleSizeChange(val) {
-      this.list.size = val;
-      this.handleSelectList();
+    // pageSize 改变时会触发
+    handlePaginationSizeChange(pageSize) {
+      this.list.size = pageSize;
+      this.handleOperateSelectList();
     },
-    handleCurrentChange(val) {
-      this.list.page = val;
-      this.handleSelectList();
+    // currentPage 改变时会触发
+    handlePaginationCurrentChange(currentPage) {
+      this.list.page = currentPage;
+      this.handleOperateSelectList();
     },
+    // 用户点击上一页按钮改变当前页后触发
+    handlePaginationPrevClick(page) {},
+    // 用户点击下一页按钮改变当前页后触发
+    handlePaginationNextClick(page) {},
     // mouse
     /**
      * 隐藏菜单
@@ -129,7 +145,7 @@ export default {
       // this.$refs.contextmenu.hide()
     },
     // actions
-    handleInsertItem(data = {}, showMsg = true) {
+    handleOperateInsertItem(data = {}, showMsg = true) {
       this.form.loading = true;
       return this.requestInsertItem({
         ...this.form.data,
@@ -143,26 +159,31 @@ export default {
           this.form.loading = false;
         });
     },
-    handleImportItem() {},
-    handleDeleteItem() {},
-    handleDeleteList(data = {}, showMsg = true) {
+    handleOperateImportItem() {},
+    handleOperateDeleteItem() {},
+    handleOperateDeleteList(data = {}, showMsg = true) {
+      console.log("🚀 ~ file: index.js ~ line 165 ~ handleOperateDeleteList ~ data", data);
       return this.$confirm("此操作将永久删除所选内容, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       }).then(() => {
         this.list.loading = true;
-        return this.requestDeleteList({ ...data, [this.form.deleteOperateKey]: [...this.list.selection, this.list.row].map((v) => v[this.form.key]) })
+        console.log("🚀 ~ file: index.js ~ line 172 ~ handleOperateDeleteList ~ this.list.selection", this.list.selection);
+        console.log("🚀 ~ file: index.js ~ line 173 ~ handleOperateDeleteList ~ this.list.row", this.list.row);
+        data = { ...data, [this.form.key]: [...this.list.selection, this.list.row || {}].map((v) => v[this.form.key]).filter((v) => v) };
+        console.log("🚀 ~ file: index.js ~ line 172 ~ handleOperateDeleteList ~ data", data);
+        return this.requestDeleteList(data)
           .then((res) => {
             this.$message.success(`删除成功`);
-            return this.handleSelectList();
+            return this.handleOperateSelectList();
           })
           .finally(() => {
             this.list.loading = false;
           });
       });
     },
-    handleUpdateItem(data = {}, showMsg = true) {
+    handleOperateUpdateItem(data = {}, showMsg = true) {
       this.form.loading = true;
       return this.requestUpdateItem({
         ...this.form.data,
@@ -176,7 +197,7 @@ export default {
           this.form.loading = false;
         });
     },
-    handleSelectList(data = {}, showMsg = true) {
+    handleOperateSelectList(data = {}, showMsg = true) {
       this.list.loading = true;
       return this.requestSelectList({
         ...this.form.data,
@@ -195,8 +216,8 @@ export default {
           this.list.loading = false;
         });
     },
-    handleSelectTree() {},
-    handleSelectItem(data, showMsg = true) {
+    handleOperateSelectTree() {},
+    handleOperateSelectItem(data, showMsg = true) {
       this.form.loading = true;
       return this.requestSelectItem({
         ...this.form.data,
@@ -211,13 +232,13 @@ export default {
           this.form.loading = false;
         });
     },
-    handleSelectCount(data, showMsg = true) {
+    handleOperateSelectCount(data, showMsg = true) {
       this.loading = true;
       this.requestSelectCount(data).finally(() => {
         this.loading = true;
       });
     },
-    handleExportList() {},
+    handleOperateExportList() {},
 
     // apis
     requestInsertItem() {
