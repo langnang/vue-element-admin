@@ -18,9 +18,7 @@ export default {
         rules: {},
         bind: {},
         // 数据主键
-        key: "",
-        // 数据删除参数名
-        deleteOperateKey: "",
+        primary_keys: [],
         upload: {
           action: "",
         },
@@ -53,12 +51,18 @@ export default {
         deleteList: () => ({}),
         updateItem: () => ({
           path: this.$route.path.split("/").slice(0, -1).join("/") + "/info",
-          query: { [this.form.key]: (this.list.row || this.list.selection[0])[this.form.key] },
+          query: this.form.primary_keys.reduce((t, key) => {
+            t[key] = (this.list.row || this.list.selection[0])[key];
+            return t;
+          }, {}),
         }),
         updateList: () => ({}),
         selectItem: () => ({
           path: this.$route.path.split("/").slice(0, -1).join("/") + "/info",
-          query: { [this.form.key]: (this.list.row || this.list.selection[0])[this.form.key] },
+          query: this.form.primary_keys.reduce((t, key) => {
+            t[key] = (this.list.row || this.list.selection[0])[key];
+            return t;
+          }, {}),
         }),
         selectList: () => ({}),
         selectTree: () => ({}),
@@ -171,7 +175,13 @@ export default {
         this.list.loading = true;
         console.log("🚀 ~ file: index.js ~ line 172 ~ handleOperateDeleteList ~ this.list.selection", this.list.selection);
         console.log("🚀 ~ file: index.js ~ line 173 ~ handleOperateDeleteList ~ this.list.row", this.list.row);
-        data = { ...data, [this.form.key]: [...this.list.selection, this.list.row || {}].map((v) => v[this.form.key]).filter((v) => v) };
+        data = {
+          ...data,
+          ...this.form.primary_keys.reduce((t, key) => {
+            t[key] = [...this.list.selection, this.list.row || {}].map((v) => v[key]).filter((v) => v);
+            return t;
+          }, {}),
+        };
         console.log("🚀 ~ file: index.js ~ line 172 ~ handleOperateDeleteList ~ data", data);
         return this.requestDeleteList(data)
           .then((res) => {

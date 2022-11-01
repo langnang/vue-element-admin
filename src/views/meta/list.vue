@@ -1,5 +1,5 @@
 <script>
-import { deleteMetaList, selectMetaList, selectMetaCount } from "@/api/meta";
+import { getMetaConfig, deleteMetaList, selectMetaList, selectMetaCount } from "@/api/meta";
 import ElViewTable from "@/components/ElementView/ElViewTable.vue";
 export default {
   name: "TypechoContentList",
@@ -7,7 +7,7 @@ export default {
   data() {
     return {
       form: {
-        key: "id",
+        primary_keys: ["mid"],
         upload: {
           action: "http://localhost:9090/?/typecho/content/import",
           accept: ".xlsx",
@@ -52,12 +52,12 @@ export default {
               component: "el-select",
               options: [],
               on: {
-                focus: () => {
-                  const $el = this.list.columns[this.list.columns.findIndex((v) => v.prop === "type")];
-                  selectMetaCount({ type: "option", slug: "default", columns: ["id", "name", "description"] }).then((res) => {
-                    $el.slotHeader.options = res.rows.map((v) => ({ ...v, value: v.name, label: v.description }));
-                  });
-                },
+                // focus: () => {
+                //   const $el = this.list.columns[this.list.columns.findIndex((v) => v.prop === "type")];
+                //   selectMetaCount({ type: "option", slug: "default", columns: ["name", "description"] }).then((res) => {
+                //     $el.slotHeader.options = res.rows.map((v) => ({ ...v, value: v.name, label: v.description }));
+                //   });
+                // },
               },
             },
           },
@@ -71,13 +71,14 @@ export default {
     };
   },
   created() {
-    selectMetaCount({ type: "option", slug: "meta.type", columns: ["id", "name", "description"] }).then((res) => {
-      this.list.columns[this.list.columns.findIndex((v) => v.prop === "type")].slotHeader.options = res.rows.map((v) => ({ ...v, value: v.channel }));
+    const $el = this.list.columns[this.list.columns.findIndex((v) => v.prop === "type")];
+    selectMetaCount({ type: "option", slug: "default", columns: ["name", "description"] }).then((res) => {
+      $el.slotHeader.options = res.rows.map((v) => ({ ...v, value: v.name, label: v.description }));
     });
   },
   methods: {
     handleBack() {
-      this.$router.push({ path: "/typecho/content" });
+      this.$router.push({ path: "/meta" });
     },
     requestDeleteList: deleteMetaList,
     requestSelectList: selectMetaList,

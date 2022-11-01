@@ -33,9 +33,11 @@ export default {
     return {};
   },
   computed: {},
-  created() {
-    if (this.$route.query[this.form.key]) {
-      this.form.data[this.form.key] = this.$route.query[this.form.key];
+  mounted() {
+    if (this.form.primary_keys.every((key) => this.$route.query[key])) {
+      this.form.primary_keys.forEach((key) => {
+        this.form.data[key] = this.$route.query[key];
+      });
       this.handleOperateSelectItem();
     }
   },
@@ -43,13 +45,23 @@ export default {
     handleSubmit(name) {
       this.$refs[name].validate((valid) => {
         if (valid) {
-          if (this.form.data[this.form.key]) {
+          if (this.form.primary_keys.every((key) => this.form.data[key])) {
             this.handleOperateUpdateItem();
           } else {
             this.handleOperateInsertItem().then((res) => {
               this.form.data = { ...res };
-              this.$router.push({ query: { [this.form.key]: res[this.form.key] } });
-              this.handleOperateSelectItem({ [this.form.key]: res[this.form.key] });
+              this.$router.push({
+                query: this.form.primary_keys.reduce((t, key) => {
+                  t[key] = (this.list.row || this.list.selection[0])[key];
+                  return t;
+                }, {}),
+              });
+              this.handleOperateSelectItem(
+                this.form.primary_keys.reduce((t, key) => {
+                  t[key] = (this.list.row || this.list.selection[0])[key];
+                  return t;
+                }, {})
+              );
             });
           }
         } else {

@@ -8,7 +8,7 @@ export default {
   data() {
     return {
       form: {
-        key: "id",
+        primary_keys: ["cid"],
         upload: {
           action: "http://localhost:9090/?/typecho/content/import",
           accept: ".xlsx",
@@ -32,7 +32,23 @@ export default {
               component: "el-input",
             },
           },
-          { prop: "type", label: "类型", width: 100 },
+          {
+            prop: "type",
+            label: "类型",
+            width: 200,
+            slotHeader: {
+              component: "el-select",
+              options: [],
+              on: {
+                // focus: () => {
+                // const $el = this.list.columns[this.list.columns.findIndex((v) => v.prop === "type")];
+                // selectMetaCount({ type: "option", slug: "content.type", columns: ["name", "description"] }).then((res) => {
+                //   $el.slotHeader.options = res.rows.map((v) => ({ ...v, value: v.name, label: v.description }));
+                // });
+                // },
+              },
+            },
+          },
           {
             prop: "status",
             label: "状态",
@@ -40,6 +56,14 @@ export default {
             slotHeader: {
               component: "el-select",
               options: [],
+              on: {
+                focus: () => {
+                  const $el = this.list.columns[this.list.columns.findIndex((v) => v.prop === "status")];
+                  selectMetaCount({ type: "option", slug: "content.status", columns: ["name", "description"] }).then((res) => {
+                    $el.slotHeader.options = res.rows.map((v) => ({ ...v, value: v.name, label: v.description }));
+                  });
+                },
+              },
             },
           },
           { prop: "commentsNum", label: "回复数", width: 100 },
@@ -48,8 +72,9 @@ export default {
     };
   },
   created() {
-    selectMetaCount({ type: "option", slug: "content.status", columns: ["id", "name", "description"] }).then((res) => {
-      this.list.columns[4].slotHeader.options = res.rows.map((v) => ({ ...v, value: v.name, label: v.description }));
+    const $el = this.list.columns[this.list.columns.findIndex((v) => v.prop === "type")];
+    selectMetaCount({ type: "option", slug: "content.type", columns: ["name", "description"] }).then((res) => {
+      $el.slotHeader.options = res.rows.map((v) => ({ ...v, value: v.name, label: v.description }));
     });
   },
   methods: {

@@ -149,10 +149,17 @@ export const asyncRoutes = [
     meta: { title: "Meta", icon: "icon", noCache: true },
     children: [
       {
+        path: "",
+        component: () => import("@/views/meta/index"),
+        name: "Meta",
+        meta: { title: "Meta", icon: "icon", noCache: true },
+      },
+      {
         path: "list",
         component: () => import("@/views/meta/list"),
         name: "Meta List",
         meta: { title: "Meta List", icon: "icon", noCache: true },
+        hidden: true,
       },
       {
         path: "info",

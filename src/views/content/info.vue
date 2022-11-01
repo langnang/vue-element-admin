@@ -6,6 +6,7 @@ export default {
   data() {
     return {
       form: {
+        primary_keys: ["cid"],
         items: [
           { prop: "title", label: "标题" },
           { prop: "slug", label: "编码" },
@@ -18,7 +19,6 @@ export default {
             },
           },
         ],
-        key: "id",
       },
     };
   },

@@ -1,4 +1,6 @@
-import request, { post } from "@/utils/request";
+import request, { get, post } from "@/utils/request";
+
+export const getMetaConfig = (data) => get("/api/meta/config", data);
 
 export const insertMetaItem = (data) => post("/api/meta/insert", data);
 

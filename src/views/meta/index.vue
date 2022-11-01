@@ -6,7 +6,7 @@
           <el-badge :value="item._count">
             {{ item.description }} <small> {{ item.name }}</small>
           </el-badge>
-          <router-link :to="{ path: '/content/list', query: { type: item.name } }" style="float: right">详情</router-link>
+          <router-link :to="{ path: '/meta/list', query: { type: item.name } }" style="float: right">详情</router-link>
         </template>
       </el-card>
     </el-col>
@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     handleQuery() {
-      Promise.all([selectMetaList({ type: "option", slug: "content.type", size: Number.MAX_SAFE_INTEGER }), selectMetaCount({ columns: ["type"] })]).then((res) => {
+      Promise.all([selectMetaList({ type: "option", slug: "default", size: Number.MAX_SAFE_INTEGER }), selectMetaCount({ columns: ["type"] })]).then((res) => {
         const list = [...res[0].rows].map(function (row) {
           row["_count"] = [...res[1].rows].find((v) => v.type === row.name)?._count || 0;
           return row;

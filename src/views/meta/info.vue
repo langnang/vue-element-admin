@@ -1,11 +1,12 @@
 <script>
-import { insertMetaItem, selectMetaItem, updateMetaItem, selectMetaCount } from "@/api/meta";
+import { getMetaConfig, insertMetaItem, selectMetaItem, updateMetaItem, selectMetaCount } from "@/api/meta";
 import ElViewForm from "@/components/ElementView/ElViewForm";
 export default {
   extends: ElViewForm,
   data() {
     return {
       form: {
+        primary_keys: ["mid"],
         items: [
           { prop: "name", label: "标题" },
           {
@@ -53,6 +54,7 @@ export default {
       },
     };
   },
+  created() {},
   methods: {
     handleBack() {
       this.$router.push({ path: "/meta/list" });

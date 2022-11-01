@@ -91,6 +91,7 @@ export default {
         t[v.prop] = null;
         return t;
       }, {}),
+      ...this.$route.query,
     };
     this.handleOperateSelectList();
   },
