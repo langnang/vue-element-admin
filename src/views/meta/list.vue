@@ -29,7 +29,19 @@ export default {
             label: "编码",
             width: 200,
             slotHeader: {
-              component: "el-input",
+              component: "el-select",
+              options: [],
+              bind: {
+                clearable: true,
+              },
+              on: {
+                focus: () => {
+                  const $el = this.list.columns[this.list.columns.findIndex((v) => v.prop === "slug")];
+                  selectMetaCount({ type: "option", columns: ["slug"] }).then((res) => {
+                    $el.slotHeader.options = res.rows.map((v) => ({ ...v, value: v.slug }));
+                  });
+                },
+              },
             },
           },
           {
@@ -38,6 +50,15 @@ export default {
             width: 100,
             slotHeader: {
               component: "el-select",
+              options: [],
+              on: {
+                focus: () => {
+                  const $el = this.list.columns[this.list.columns.findIndex((v) => v.prop === "type")];
+                  selectMetaCount({ type: "option", slug: "default", columns: ["id", "name", "description"] }).then((res) => {
+                    $el.slotHeader.options = res.rows.map((v) => ({ ...v, value: v.name, label: v.description }));
+                  });
+                },
+              },
             },
           },
           {

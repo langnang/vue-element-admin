@@ -1,6 +1,6 @@
 <script>
 import { selectLoggerList, selectLoggerCount } from "@/api/logger";
-import { selectMetaCount } from "@/api/typecho";
+import { selectMetaCount } from "@/api/meta";
 import ElViewTable from "@/components/ElementView/ElViewTable.vue";
 import moment from "moment";
 import clipboard from "@/utils/clipboard";
@@ -34,7 +34,20 @@ export default {
               component: "el-select",
               options: [],
               bind: {
-                filterable: true,
+                loading: false,
+              },
+              on: {
+                focus: () => {
+                  const $el = this.list.columns[this.list.columns.findIndex((v) => v.prop === "channel")].slotHeader;
+                  $el.bind.loading = true;
+                  selectLoggerCount({ columns: ["channel"] })
+                    .then((res) => {
+                      $el.options = res.rows.map((v) => ({ ...v, value: v.channel }));
+                    })
+                    .finally(() => {
+                      $el.bind.loading = false;
+                    });
+                },
               },
             },
           },
@@ -61,7 +74,20 @@ export default {
               component: "el-select",
               options: [],
               bind: {
-                filterable: true,
+                loading: false,
+              },
+              on: {
+                focus: () => {
+                  const $el = this.list.columns[this.list.columns.findIndex((v) => v.prop === "var")].slotHeader;
+                  $el.bind.loading = true;
+                  selectLoggerCount({ columns: ["var"] })
+                    .then((res) => {
+                      $el.options = res.rows.map((v) => ({ ...v, value: v.var }));
+                    })
+                    .finally(() => {
+                      $el.bind.loading = false;
+                    });
+                },
               },
             },
           },
@@ -78,13 +104,7 @@ export default {
     };
   },
   created() {
-    selectLoggerCount({ columns: ["channel"] }).then((res) => {
-      this.list.columns[this.list.columns.findIndex((v) => v.prop === "channel")].slotHeader.options = res.rows.map((v) => ({ ...v, value: v.channel }));
-    });
-    selectLoggerCount({ columns: ["var"] }).then((res) => {
-      this.list.columns[this.list.columns.findIndex((v) => v.prop === "var")].slotHeader.options = res.rows.map((v) => ({ ...v, value: v.var }));
-    });
-    selectMetaCount({ type: "option", slug: "log.level", columns: ["mid", "name", "description"] }).then((res) => {
+    selectMetaCount({ type: "option", slug: "log.level", columns: ["id", "name", "description"] }).then((res) => {
       this.list.columns[this.list.columns.findIndex((v) => v.prop === "level")].slotHeader.options = res.rows.map((v) => ({ ...v, value: v.name, label: v.description }));
     });
   },

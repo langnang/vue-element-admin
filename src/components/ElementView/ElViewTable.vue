@@ -21,7 +21,7 @@
             <el-table-column align="center" show-overflow-tooltip :type="col.type" :prop="col.prop" :label="col.label" :width="col.width">
               <template :slot="col.slotHeader ? 'header' : false" slot-scope="{}">
                 <el-form-item :prop="col.prop">
-                  <component :is="col.slotHeader.component || 'el-input'" v-model="form.data[col.prop]" class="text-center" clearable :placeholder="col.slotHeader.placeholder || col.label" v-bind="col.slotHeader.bind">
+                  <component :is="col.slotHeader.component || 'el-input'" v-model="form.data[col.prop]" class="text-center" :placeholder="col.slotHeader.placeholder || col.label" clearable filterable v-bind="col.slotHeader.bind" v-on="col.slotHeader.on">
                     <el-option v-for="item in col.slotHeader.options || []" :key="item.value" :label="item.label" :value="item.value" v-bind="item.bind" />
                   </component>
                 </el-form-item>

@@ -163,6 +163,34 @@ export const asyncRoutes = [
       },
     ],
   },
+  {
+    path: "/content",
+    component: Layout,
+    // name: "Content",
+    // meta: { title: "Content", icon: "icon", noCache: true },
+    children: [
+      {
+        path: "",
+        component: () => import("@/views/content/index"),
+        name: "Content",
+        meta: { title: "Content", icon: "icon", noCache: true },
+      },
+      {
+        path: "list",
+        component: () => import("@/views/content/list"),
+        name: "Content List",
+        meta: { title: "Content List", icon: "icon", noCache: true },
+        hidden: true,
+      },
+      {
+        path: "info",
+        component: () => import("@/views/content/info"),
+        name: "Content Info",
+        meta: { title: "Content Info", icon: "icon", noCache: true },
+        hidden: true,
+      },
+    ],
+  },
   require("./modules/typecho")["default"],
 
   {
