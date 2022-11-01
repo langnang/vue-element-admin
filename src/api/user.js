@@ -1,4 +1,4 @@
-import request from "@/utils/request";
+import request, { post } from "@/utils/request";
 const tokens = {
   admin: {
     token: "admin-token",
@@ -65,3 +65,17 @@ export function logout() {
     method: "POST",
   });
 }
+
+export const insertUserItem = (data) => post("/api/user/insert", data);
+
+export const deleteUserList = (data) => post("/api/user/delete", data);
+
+export const updateUserItem = (data) => post("/api/user/update", data);
+
+export const selectUserCount = (data) => post("/api/user/count", data);
+
+export const selectUserList = (data) => post("/api/user/list", data);
+
+export const selectUserTree = (data) => post("/api/user/tree", data);
+
+export const selectUserItem = (data) => post("/api/user/info", data);

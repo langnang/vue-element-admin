@@ -112,6 +112,8 @@ export default {
       return `<font-awesome-icon :icon="['${type}', '${symbol}']"/>`;
     },
     handleClipboard(text, event) {
+      console.log("🚀 ~ file: index.vue ~ line 115 ~ handleClipboard ~ text", text);
+      console.log(typeof text);
       clipboard(text, event);
     },
   },
