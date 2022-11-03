@@ -15,7 +15,8 @@
 
 <script>
 import mixin from "@/mixins";
-import { selectMetaCount, selectMetaList } from "@/api/meta";
+import { selectMetaList } from "@/api/meta";
+import { selectContentCount } from "@/api/content";
 export default {
   mixins: [mixin],
   data() {
@@ -26,7 +27,7 @@ export default {
   },
   methods: {
     handleQuery() {
-      Promise.all([selectMetaList({ type: "option", slug: "content.type", size: Number.MAX_SAFE_INTEGER }), selectMetaCount({ columns: ["type"] })]).then((res) => {
+      Promise.all([selectMetaList({ type: "option", slug: "content.type", size: Number.MAX_SAFE_INTEGER }), selectContentCount({ columns: ["type"] })]).then((res) => {
         const list = [...res[0].rows].map(function (row) {
           row["_count"] = [...res[1].rows].find((v) => v.type === row.name)?._count || 0;
           return row;

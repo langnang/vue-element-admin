@@ -35,7 +35,7 @@ export default {
             on: {
               focus: () => {
                 const $el = this.form.items[this.form.items.findIndex((v) => v.prop === "type")];
-                selectMetaCount({ type: "option", slug: "default", columns: ["id", "name", "description"] }).then((res) => {
+                selectMetaCount({ type: "option", slug: "default", columns: ["name", "description"] }).then((res) => {
                   $el.options = res.rows.map((v) => ({ ...v, value: v.name, label: v.description }));
                 });
               },
@@ -50,7 +50,7 @@ export default {
             },
           },
         ],
-        key: "id",
+        key: "mid",
       },
     };
   },

@@ -60,6 +60,10 @@
     .sub-el-icon {
       margin-right: 12px;
       margin-left: -2px;
+
+      &.svg-inline--fa {
+        margin-left: 0;
+      }
     }
 
     .el-menu {
@@ -191,6 +195,7 @@
     .svg-icon {
       margin-right: 16px;
     }
+
     .sub-el-icon {
       margin-right: 12px;
       margin-left: -2px;

@@ -35,6 +35,7 @@ export default {
               options: [],
               bind: {
                 loading: false,
+                "allow-create": true,
               },
               on: {
                 focus: () => {
@@ -75,6 +76,7 @@ export default {
               options: [],
               bind: {
                 loading: false,
+                "allow-create": true,
               },
               on: {
                 focus: () => {
@@ -104,7 +106,7 @@ export default {
     };
   },
   created() {
-    selectMetaCount({ type: "option", slug: "log.level", columns: ["id", "name", "description"] }).then((res) => {
+    selectMetaCount({ type: "option", slug: "log.level", columns: ["name", "description"] }).then((res) => {
       this.list.columns[this.list.columns.findIndex((v) => v.prop === "level")].slotHeader.options = res.rows.map((v) => ({ ...v, value: v.name, label: v.description }));
     });
   },

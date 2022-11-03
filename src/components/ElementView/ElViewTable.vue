@@ -49,7 +49,17 @@
     <el-card ref="footer" :body-style="{ padding: '4px 8px' }">
       <el-row :gutter="8">
         <el-col :span="-1">
-          <el-pagination :current-page="list.page" :page-sizes="[10, 20, 50, 100]" :page-size="list.size" layout="total, sizes, prev, pager, next, jumper" :total="list.total" style="padding: 0" @size-change="handlePaginationSizeChange" @current-change="handlePaginationCurrentChange" />
+          <el-pagination
+            :current-page="list.page"
+            :page-sizes="[10, 20, 50, 100]"
+            :pager-count="5"
+            :page-size="list.size"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="list.total"
+            style="padding: 0"
+            @size-change="handlePaginationSizeChange"
+            @current-change="handlePaginationCurrentChange"
+          />
         </el-col>
         <el-col :span="-1" style="float: right">
           <el-button size="mini" type="success" @click="handleQuery">查询</el-button>

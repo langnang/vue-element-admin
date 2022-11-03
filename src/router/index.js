@@ -180,7 +180,7 @@ export const asyncRoutes = [
     // meta: { title: "Meta", icon: "icon", noCache: true },
     children: [
       {
-        path: "index",
+        path: "",
         component: () => import("@/views/meta/index"),
         name: "Meta",
         meta: { title: "标识管理", icon: "el-icon-eleme", noCache: true },
@@ -202,8 +202,8 @@ export const asyncRoutes = [
     ],
   },
 
-  { path: "/comment", component: Layout, meta: { title: "消息管理", icon: "message", noCache: true } },
-  { path: "/user", component: Layout, meta: { title: "用户管理", icon: "el-icon-user-solid", noCache: true } },
+  { path: "/comment", component: Layout, meta: { title: "消息管理", icon: "message", noCache: true }, hidden: true },
+  { path: "/user", component: Layout, meta: { title: "用户管理", icon: "el-icon-user-solid", noCache: true }, hidden: true },
   require("./modules/typecho")["default"],
 
   {
@@ -282,7 +282,7 @@ export const asyncRoutes = [
         path: "index",
         component: () => import("@/views/logger/index"),
         name: "Logger",
-        meta: { title: "Logger", icon: "bug", noCache: true },
+        meta: { title: "日志管理", icon: "bug", noCache: true },
       },
     ],
   },

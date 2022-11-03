@@ -52,13 +52,15 @@ export default {
               this.form.data = { ...res };
               this.$router.push({
                 query: this.form.primary_keys.reduce((t, key) => {
-                  t[key] = (this.list.row || this.list.selection[0])[key];
+                  console.log("🚀 ~ file: ElViewForm.vue ~ line 58 ~ query:this.form.primary_keys.reduce ~ key", key);
+                  console.log("🚀 ~ file: ElViewForm.vue ~ line 58 ~ query:this.form.primary_keys.reduce ~ key", this.form.data);
+                  t[key] = this.form.data[key];
                   return t;
                 }, {}),
               });
               this.handleOperateSelectItem(
                 this.form.primary_keys.reduce((t, key) => {
-                  t[key] = (this.list.row || this.list.selection[0])[key];
+                  t[key] = this.form.data[key];
                   return t;
                 }, {})
               );

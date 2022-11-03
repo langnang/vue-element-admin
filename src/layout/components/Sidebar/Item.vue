@@ -4,7 +4,7 @@ export default {
   functional: true,
   props: {
     icon: {
-      type: String,
+      type: [String, Array],
       default: "",
     },
     title: {
@@ -39,9 +39,5 @@ export default {
   color: currentColor;
   width: 1em;
   height: 1em;
-  &.svg-inline--fa {
-    margin-left: 0 !important;
-    font-size: 18px;
-  }
 }
 </style>
