@@ -75,6 +75,17 @@
         </el-col>
       </el-row>
     </el-card>
+    <el-dialog :visible.sync="dialog.visible" :title="dialog.title" v-bind="dialog.bind">
+      <el-row :gutter="20">
+        <router-link v-for="(item, index) in dialog.data" :key="index" :to="item.to">
+          <el-col :span="6">
+            <el-card>
+              {{ item.label }}
+            </el-card>
+          </el-col>
+        </router-link>
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 

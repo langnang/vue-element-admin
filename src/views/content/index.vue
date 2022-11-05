@@ -1,14 +1,15 @@
 <template>
   <el-row :gutter="20">
-    <el-col v-for="item in list.data" :key="item.name" :span="6">
-      <el-card :body-style="{ padding: 0 }">
-        <template slot="header">
-          <el-badge :value="item._count">
-            {{ item.description }} <small> {{ item.name }}</small>
-          </el-badge>
-          <router-link :to="{ path: '/content/list', query: { type: item.name } }" style="float: right">详情</router-link>
-        </template>
-      </el-card>
+    <el-col v-for="item in list.data" :key="item.name" :span="24" style="margin-bottom: 20px">
+      <router-link :to="{ path: '/content/list', query: { type: item.name } }">
+        <el-card :body-style="{ padding: 0 }">
+          <template slot="header">
+            <el-badge :value="item._count">
+              {{ item.description }} <small> {{ item.name }}</small>
+            </el-badge>
+          </template>
+        </el-card>
+      </router-link>
     </el-col>
   </el-row>
 </template>

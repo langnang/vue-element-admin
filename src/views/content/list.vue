@@ -69,6 +69,12 @@ export default {
           { prop: "commentsNum", label: "回复数", width: 100 },
         ],
       },
+      dialog: {
+        data: [
+          { label: "接口", to: { path: "/content/info", query: { type: "api" } } },
+          { label: "文档", to: { path: "/content/info", query: { type: "post" } } },
+        ],
+      },
     };
   },
   created() {

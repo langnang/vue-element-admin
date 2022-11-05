@@ -16,7 +16,12 @@ export default {
         data: {},
         items: [],
         rules: {},
-        bind: {},
+        bind: {
+          labelWidth: "80px",
+          style: {
+            marginRight: "20px",
+          },
+        },
         // 数据主键
         primary_keys: [],
         upload: {
@@ -72,6 +77,14 @@ export default {
   },
   methods: {
     handleGo(operate) {
+      if (this.dialog.data.length > 0) {
+        if (operate === "insertItem") {
+          this.dialog.title = "选择新增类型";
+          this.dialog.visible = true;
+          return;
+        }
+      }
+
       this.$router.push(this.to[operate]());
     },
     handleBack() {},

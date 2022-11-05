@@ -205,7 +205,34 @@ export const asyncRoutes = [
   { path: "/comment", component: Layout, meta: { title: "消息管理", icon: "message", noCache: true }, hidden: true },
   { path: "/user", component: Layout, meta: { title: "用户管理", icon: "el-icon-user-solid", noCache: true }, hidden: true },
   require("./modules/typecho")["default"],
-
+  {
+    path: "/quote",
+    component: Layout,
+    name: "Quote",
+    meta: { title: "语录管理", icon: "el-icon-eleme", noCache: true },
+    children: [
+      {
+        path: "",
+        component: () => import("@/views/quote/index"),
+        name: "Quote",
+        meta: { title: "语录管理", icon: "el-icon-eleme", noCache: true },
+      },
+      {
+        path: "list",
+        component: () => import("@/views/quote/list"),
+        name: "Quote List",
+        meta: { title: "语录列表", icon: "icon", noCache: true },
+        hidden: true,
+      },
+      {
+        path: "info",
+        component: () => import("@/views/quote/info"),
+        name: "Quote Info",
+        meta: { title: "语录详情", icon: "icon", noCache: true },
+        hidden: true,
+      },
+    ],
+  },
   {
     path: "/phpspider",
     component: Layout,
@@ -286,7 +313,7 @@ export const asyncRoutes = [
       },
     ],
   },
-  require("./modules/components")["default"],
+  // require("./modules/components")["default"],
   require("./modules/demos")["default"],
   require("./modules/helpers")["default"],
 

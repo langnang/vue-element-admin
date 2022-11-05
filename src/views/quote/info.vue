@@ -1,5 +1,5 @@
 <script>
-import { getMetaConfig, insertMetaItem, selectMetaItem, updateMetaItem, selectMetaCount } from "@/api/meta";
+import { getQuoteConfig, insertQuoteItem, selectQuoteItem, updateQuoteItem, selectQuoteCount } from "@/api/meta";
 import ElViewForm from "@/components/ElementView/ElViewForm";
 export default {
   extends: ElViewForm,
@@ -21,7 +21,7 @@ export default {
             on: {
               focus: () => {
                 const $el = this.form.items[this.form.items.findIndex((v) => v.prop === "slug")];
-                selectMetaCount({ type: "option", columns: ["slug"] }).then((res) => {
+                selectQuoteCount({ type: "option", columns: ["slug"] }).then((res) => {
                   $el.options = res.rows.map((v) => ({ ...v, value: v.slug }));
                 });
               },
@@ -32,13 +32,10 @@ export default {
             label: "类型",
             component: "el-select",
             options: [],
-            bind: {
-              "allow-create": true,
-            },
             on: {
               focus: () => {
                 const $el = this.form.items[this.form.items.findIndex((v) => v.prop === "type")];
-                selectMetaCount({ type: "option", slug: "default", columns: ["name", "description"] }).then((res) => {
+                selectQuoteCount({ type: "option", slug: "default", columns: ["name", "description"] }).then((res) => {
                   $el.options = res.rows.map((v) => ({ ...v, value: v.name, label: v.description }));
                 });
               },
@@ -62,9 +59,9 @@ export default {
     handleBack() {
       this.$router.push({ path: "/meta/list" });
     },
-    requestInsertItem: insertMetaItem,
-    requestSelectItem: selectMetaItem,
-    requestUpdateItem: updateMetaItem,
+    requestInsertItem: insertQuoteItem,
+    requestSelectItem: selectQuoteItem,
+    requestUpdateItem: updateQuoteItem,
   },
 };
 </script>
