@@ -4,7 +4,7 @@
       <el-scrollbar style="height: calc(100vh - 192px)">
         <el-form ref="form" v-loading="form.loading" :model="form.data" :rules="form.rules" v-bind="form.bind">
           <el-form-item v-for="item in form.items || []" :key="item.prop" :label="item.label">
-            <component :is="item.component || 'el-input'" v-model="form.data[item.prop]" :placeholder="item.placeholder || item.label" clearable filterable v-bind="item.bind" v-on="item.on">
+            <component :is="item.component || 'el-input'" :ref="'form_item_' + item.prop" v-model="form.data[item.prop]" :placeholder="item.placeholder || item.label" clearable filterable v-bind="item.bind" v-on="item.on">
               <el-option v-for="opt in item.options || []" :key="opt.value" :label="opt.label" :value="opt.value" v-bind="opt.bind" />
             </component>
           </el-form-item>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import mixin from "@/mixins";
+import mixin from "./mixins";
 export default {
   name: "ElViewForm",
 

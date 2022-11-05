@@ -5,13 +5,13 @@ Vue.use(Router);
 
 /* Layout */
 import Layout from "@/layout";
-import LayoutMain from "@/layout/components/AppMain";
+// import LayoutMain from "@/layout/components/AppMain";
 
 /* Router Modules */
-import componentsRouter from "./modules/components";
+// import componentsRouter from "./modules/components";
 // import chartsRouter from "./modules/charts";
-import tableRouter from "./modules/table";
-import nestedRouter from "./modules/nested";
+// import tableRouter from "./modules/table";
+// import nestedRouter from "./modules/nested";
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -63,12 +63,12 @@ export const constantRoutes = [
   },
   {
     path: "/404",
-    component: () => import("@/views/error-page/404"),
+    component: () => import("@/views/error/404"),
     hidden: true,
   },
   {
     path: "/401",
-    component: () => import("@/views/error-page/401"),
+    component: () => import("@/views/error/401"),
     hidden: true,
   },
   {
@@ -80,7 +80,7 @@ export const constantRoutes = [
         path: "dashboard",
         component: () => import("@/views/dashboard/index"),
         name: "Dashboard",
-        meta: { title: "Dashboard", icon: "dashboard", affix: true },
+        meta: { title: "首页", icon: "dashboard", affix: true },
       },
     ],
   },
@@ -138,7 +138,30 @@ export const asyncRoutes = [
         path: "index",
         component: () => import("@/views/website/index"),
         name: "WebSite",
-        meta: { title: "WebSite", icon: "icon", noCache: true },
+        meta: { title: "站点管理", icon: "icon", noCache: true },
+      },
+    ],
+  },
+  {
+    path: "/public-api",
+    component: Layout,
+    redirect: "/public-api/list",
+    // name: "Content",
+    meta: { title: "接口管理", icon: "icon", noCache: true },
+    children: [
+      {
+        path: "list",
+        component: () => import("@/views/public-api/list"),
+        name: "Content List",
+        meta: { title: "接口列表", icon: "icon", noCache: true },
+        hidden: true,
+      },
+      {
+        path: "info",
+        component: () => import("@/views/public-api/info"),
+        name: "Content Info",
+        meta: { title: "接口详情", icon: "icon", noCache: true },
+        hidden: true,
       },
     ],
   },
@@ -209,26 +232,19 @@ export const asyncRoutes = [
     path: "/quote",
     component: Layout,
     name: "Quote",
+    redirect: "/quote/list",
     meta: { title: "语录管理", icon: "el-icon-eleme", noCache: true },
     children: [
-      {
-        path: "",
-        component: () => import("@/views/quote/index"),
-        name: "Quote",
-        meta: { title: "语录管理", icon: "el-icon-eleme", noCache: true },
-      },
       {
         path: "list",
         component: () => import("@/views/quote/list"),
         name: "Quote List",
-        meta: { title: "语录列表", icon: "icon", noCache: true },
         hidden: true,
       },
       {
         path: "info",
         component: () => import("@/views/quote/info"),
         name: "Quote Info",
-        meta: { title: "语录详情", icon: "icon", noCache: true },
         hidden: true,
       },
     ],
@@ -241,7 +257,7 @@ export const asyncRoutes = [
         path: "index",
         component: () => import("@/views/phpspider/index"),
         name: "PhpSpider",
-        meta: { title: "PhpSpider", icon: "icon", noCache: true },
+        meta: { title: "爬虫管理", icon: "icon", noCache: true },
       },
     ],
   },
@@ -253,48 +269,7 @@ export const asyncRoutes = [
         path: "index",
         component: () => import("@/views/script/index"),
         name: "Script",
-        meta: { title: "Script", icon: "icon", noCache: true },
-      },
-    ],
-  },
-  {
-    path: "/permission",
-    component: Layout,
-    redirect: "/permission/page",
-    alwaysShow: true, // will always show the root menu
-    name: "Permission",
-    meta: {
-      title: "Permission",
-      icon: "lock",
-      roles: ["admin", "editor"], // you can set roles in root nav
-    },
-    children: [
-      {
-        path: "page",
-        component: () => import("@/views/permission/page"),
-        name: "PagePermission",
-        meta: {
-          title: "Page Permission",
-          roles: ["admin"], // or you can only set roles in sub nav
-        },
-      },
-      {
-        path: "directive",
-        component: () => import("@/views/permission/directive"),
-        name: "DirectivePermission",
-        meta: {
-          title: "Directive Permission",
-          // if do not set roles, means: this page does not require permission
-        },
-      },
-      {
-        path: "role",
-        component: () => import("@/views/permission/role"),
-        name: "RolePermission",
-        meta: {
-          title: "Role Permission",
-          roles: ["admin"],
-        },
+        meta: { title: "脚本管理", icon: "icon", noCache: true },
       },
     ],
   },
@@ -313,9 +288,7 @@ export const asyncRoutes = [
       },
     ],
   },
-  // require("./modules/components")["default"],
-  require("./modules/demos")["default"],
-  require("./modules/helpers")["default"],
+  require("./modules/examples")["default"],
 
   // 404 page must be placed at the end !!!
   { path: "*", redirect: "/404", hidden: true },

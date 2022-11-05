@@ -62,6 +62,10 @@ export default {
     handleBack() {
       this.$router.push({ path: "/meta/list" });
     },
+    handleBeforeSubmit() {
+      console.log(this.form.data.type);
+      return false;
+    },
     requestInsertItem: insertMetaItem,
     requestSelectItem: selectMetaItem,
     requestUpdateItem: updateMetaItem,

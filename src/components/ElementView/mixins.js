@@ -184,10 +184,13 @@ export default {
       // this.$refs.contextmenu.hide()
     },
     // actions
+    getFormData(operate) {
+      return this.form.data;
+    },
     handleOperateInsertItem(data = {}, showMsg = true) {
       this.form.loading = true;
       return this.requestInsertItem({
-        ...this.form.data,
+        ...this.getFormData("insertItem"),
         ...data,
       })
         .then((res) => {
@@ -231,7 +234,7 @@ export default {
     handleOperateUpdateItem(data = {}, showMsg = true) {
       this.form.loading = true;
       return this.requestUpdateItem({
-        ...this.form.data,
+        ...this.getFormData("updateItem"),
         ...data,
       })
         .then((res) => {
@@ -245,7 +248,7 @@ export default {
     handleOperateSelectList(data = {}, showMsg = true) {
       this.list.loading = true;
       return this.requestSelectList({
-        ...this.form.data,
+        ...this.getFormData("selectList"),
         page: this.list.page,
         size: this.list.size,
         ...data,
@@ -265,7 +268,7 @@ export default {
     handleOperateSelectItem(data, showMsg = true) {
       this.form.loading = true;
       return this.requestSelectItem({
-        ...this.form.data,
+        ...this.getFormData("selectItem"),
         ...data,
       })
         .then((res) => {

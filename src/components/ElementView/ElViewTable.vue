@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import mixin from "@/mixins";
+import mixin from "./mixins";
 export default {
   name: "ElViewTable",
   mixins: [mixin],

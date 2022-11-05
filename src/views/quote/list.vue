@@ -1,5 +1,5 @@
 <script>
-import { getQuoteConfig, deleteQuoteList, selectQuoteList, selectQuoteCount } from "@/api/meta";
+import { getQuoteConfig, deleteQuoteList, selectQuoteList, selectQuoteCount } from "@/api/quote";
 import ElViewTable from "@/components/ElementView/ElViewTable.vue";
 export default {
   name: "TypechoContentList",
@@ -17,53 +17,18 @@ export default {
         columns: [
           { type: "selection", width: 45 },
           {
-            prop: "name",
-            label: "名称",
-            width: 200,
-            slotHeader: {
-              component: "el-input",
-            },
-          },
-          {
-            prop: "slug",
-            label: "编码",
-            width: 200,
-            slotHeader: {
-              component: "el-select",
-              options: [],
-              bind: {
-                clearable: true,
-              },
-              on: {
-                focus: () => {
-                  const $el = this.list.columns[this.list.columns.findIndex((v) => v.prop === "slug")];
-                  selectQuoteCount({ type: "option", columns: ["slug"] }).then((res) => {
-                    $el.slotHeader.options = res.rows.map((v) => ({ ...v, value: v.slug }));
-                  });
-                },
-              },
-            },
-          },
-          {
             prop: "type",
             label: "类型",
             width: 100,
             slotHeader: {
               component: "el-select",
               options: [],
-              on: {
-                // focus: () => {
-                //   const $el = this.list.columns[this.list.columns.findIndex((v) => v.prop === "type")];
-                //   selectQuoteCount({ type: "option", slug: "default", columns: ["name", "description"] }).then((res) => {
-                //     $el.slotHeader.options = res.rows.map((v) => ({ ...v, value: v.name, label: v.description }));
-                //   });
-                // },
-              },
+              on: {},
             },
           },
           {
-            prop: "description",
-            label: "描述",
+            prop: "text",
+            label: "内容",
           },
           { prop: "order", label: "权重", width: 55 },
         ],
@@ -72,9 +37,6 @@ export default {
   },
   created() {
     const $el = this.list.columns[this.list.columns.findIndex((v) => v.prop === "type")];
-    selectQuoteCount({ type: "option", slug: "default", columns: ["name", "description"] }).then((res) => {
-      $el.slotHeader.options = res.rows.map((v) => ({ ...v, value: v.name, label: v.description }));
-    });
   },
   methods: {
     handleBack() {

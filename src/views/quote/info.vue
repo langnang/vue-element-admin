@@ -1,5 +1,5 @@
 <script>
-import { getQuoteConfig, insertQuoteItem, selectQuoteItem, updateQuoteItem, selectQuoteCount } from "@/api/meta";
+import { getQuoteConfig, insertQuoteItem, selectQuoteItem, updateQuoteItem, selectQuoteCount } from "@/api/quote";
 import ElViewForm from "@/components/ElementView/ElViewForm";
 export default {
   extends: ElViewForm,
