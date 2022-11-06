@@ -35,10 +35,11 @@ export default {
   },
   methods: {
     getFormData(opearte) {
-      console.log("🚀 ~ file: info.vue ~ line 39 ~ getFormData ~ this.form.data", this.form.data);
-      if (opearte === "updateItem") {
-        console.log(this.$refs);
-        console.log("🚀 ~ file: info.vue ~ line 39 ~ getFormData ~ ", this.$refs["form_item_text"][0].getValue());
+      // console.log("🚀 ~ file: info.vue ~ line 39 ~ getFormData ~ this.form.data", this.form.data);
+      if (["insertItem", "updateItem"].indexOf(operate) !== -1) {
+        // console.log("🚀 ~ file: info.vue ~ line 40 ~ getFormData ~ 1", 1);
+        // console.log(this.$refs);
+        // console.log("🚀 ~ file: info.vue ~ line 39 ~ getFormData ~ ", this.$refs["form_item_text"][0].getValue());
         this.form.data.text = this.$refs["form_item_text"][0].getValue();
       }
       return this.form.data;
