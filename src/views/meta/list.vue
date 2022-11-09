@@ -72,8 +72,8 @@ export default {
   },
   created() {
     const $el = this.list.columns[this.list.columns.findIndex((v) => v.prop === "type")];
-    selectMetaCount({ type: "option", slug: "default", columns: ["name", "description"] }).then((res) => {
-      $el.slotHeader.options = res.rows.map((v) => ({ ...v, value: v.name, label: v.description }));
+    selectMetaCount({ type: "default", columns: ["slug", "name"] }).then((res) => {
+      $el.slotHeader.options = res.rows.map((v) => ({ ...v, value: v.slug, label: v.name }));
     });
   },
   methods: {

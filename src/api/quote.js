@@ -13,3 +13,13 @@ export const selectQuoteList = (data) => post("/api/quote/list", data);
 export const selectQuoteTree = (data) => post("/api/quote/tree", data);
 
 export const selectQuoteItem = (data) => post("/api/quote/info", data);
+
+export default {
+  insertItem: insertQuoteItem,
+  deleteList: deleteQuoteList,
+  updateItem: updateQuoteItem,
+  selectCount: selectQuoteCount,
+  selectList: selectQuoteList,
+  selectTree: selectQuoteTree,
+  selectItem: selectQuoteItem,
+};

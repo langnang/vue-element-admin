@@ -13,3 +13,13 @@ export const selectContentList = (data) => post("/api/content/list", data);
 export const selectContentTree = (data) => post("/api/content/tree", data);
 
 export const selectContentItem = (data) => post("/api/content/info", data);
+
+export default {
+  insertItem: insertContentItem,
+  deleteList: deleteContentList,
+  updateItem: updateContentItem,
+  selectCount: selectContentCount,
+  selectList: selectContentList,
+  selectTree: selectContentTree,
+  selectItem: selectContentItem,
+};

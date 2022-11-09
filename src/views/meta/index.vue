@@ -1,38 +1,51 @@
-<template>
-  <el-row :gutter="20">
-    <el-col v-for="item in list.data" :key="item.name" :span="6">
-      <el-card :body-style="{ padding: 0 }">
-        <template slot="header">
-          <el-badge :value="item._count">
-            {{ item.description }} <small> {{ item.name }}</small>
-          </el-badge>
-          <router-link :to="{ path: '/meta/list', query: { type: item.name } }" style="float: right">详情</router-link>
-        </template>
-      </el-card>
-    </el-col>
-  </el-row>
-</template>
-
 <script>
-import mixin from "@/mixins";
+import HomeTemplate from "@/templates/home";
 import { selectMetaCount, selectMetaList } from "@/api/meta";
 export default {
-  mixins: [mixin],
+  extends: HomeTemplate,
   data() {
     return {};
+  },
+  computed: {
+    span() {
+      return 3;
+    },
   },
   created() {
     this.handleQuery();
   },
   methods: {
     handleQuery() {
-      Promise.all([selectMetaList({ type: "option", slug: "default", size: Number.MAX_SAFE_INTEGER }), selectMetaCount({ columns: ["type"] })]).then((res) => {
-        const list = [...res[0].rows].map(function (row) {
-          row["_count"] = [...res[1].rows].find((v) => v.type === row.name)?._count || 0;
-          return row;
+      this.loading = true;
+      Promise.all([selectMetaList({ type: "default", size: Number.MAX_SAFE_INTEGER }), selectMetaCount({ columns: ["type"] })])
+        .then((res) => {
+          const list = [...res[0].rows].map(function (row) {
+            row._count = [...res[1].rows].find((v) => v.type === row.name)?._count || 0;
+            row.to = {
+              path: "/meta/list",
+              query: {
+                parent: row.mid,
+              },
+            };
+            row.label = row.name;
+            return row;
+          });
+          this.list.data = [
+            ...list,
+            {
+              icon: "el-icon-plus",
+              to: {
+                path: "/meta/info",
+                query: {
+                  type: "default",
+                },
+              },
+            },
+          ];
+        })
+        .finally(() => {
+          this.loading = false;
         });
-        this.list.data = list;
-      });
     },
   },
 };

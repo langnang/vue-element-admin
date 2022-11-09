@@ -1,17 +1,33 @@
-import request from '@/utils/request'
+import request from "@/utils/request";
+const Mock = require("mockjs");
 
 export function searchUser(name) {
   return request({
-    url: '/vue-element-admin/search/user',
-    method: 'get',
-    params: { name }
-  })
+    url: "/vue-element-admin/search/user",
+    method: "get",
+    params: { name },
+  });
 }
 
 export function transactionList(query) {
+  return Promise.resolve({
+    status: 200,
+    data: {
+      total: 20,
+      "items|20": [
+        {
+          order_no: "@guid()",
+          timestamp: +Mock.Random.date("T"),
+          username: "@name()",
+          price: "@float(1000, 15000, 0, 2)",
+          "status|1": ["success", "pending"],
+        },
+      ],
+    },
+  });
   return request({
-    url: '/vue-element-admin/transaction/list',
-    method: 'get',
-    params: query
-  })
+    url: "/vue-element-admin/transaction/list",
+    method: "get",
+    params: query,
+  });
 }

@@ -175,6 +175,7 @@ export const asyncRoutes = [
         path: "",
         component: () => import("@/views/content/index"),
         name: "Content",
+        redirect: "/content/list",
         meta: { title: "文本管理", icon: ["fas", "blog"], noCache: true },
       },
       {
@@ -198,7 +199,6 @@ export const asyncRoutes = [
     component: Layout,
     name: "Meta",
     meta: { title: "标识管理", icon: "el-icon-eleme", noCache: true },
-    // redirect: "/meta/page",
     // name: "Meta",
     // meta: { title: "Meta", icon: "icon", noCache: true },
     children: [
@@ -206,6 +206,7 @@ export const asyncRoutes = [
         path: "",
         component: () => import("@/views/meta/index"),
         name: "Meta",
+        redirect: "/meta/list",
         meta: { title: "标识管理", icon: "el-icon-eleme", noCache: true },
       },
       {

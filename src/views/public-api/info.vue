@@ -13,6 +13,9 @@ export default {
   data() {
     return {
       form: {
+        data: {
+          response_datatype: "text",
+        },
         primary_keys: ["cid"],
         items: [
           { prop: "title", label: "标题" },
@@ -25,6 +28,25 @@ export default {
               autosize: true,
             },
           },
+          {
+            prop: "response_datatype",
+            label: "响应类型",
+            component: "el-select",
+            options: [
+              { value: "text", label: "Text" },
+              { value: "array", label: "Array" },
+              { value: "object", label: "Object" },
+            ],
+            bind: {
+              labelWidth: 0,
+              autosize: true,
+            },
+          },
+          {
+            prop: "relation_table",
+            label: "关联表",
+            component: "el-select",
+          },
         ],
       },
     };
@@ -34,7 +56,7 @@ export default {
     this.form.data = { ...this.form.data, ...this.$route.query };
   },
   methods: {
-    getFormData(opearte) {
+    getFormData(operate) {
       // console.log("🚀 ~ file: info.vue ~ line 39 ~ getFormData ~ this.form.data", this.form.data);
       if (["insertItem", "updateItem"].indexOf(operate) !== -1) {
         // console.log("🚀 ~ file: info.vue ~ line 40 ~ getFormData ~ 1", 1);

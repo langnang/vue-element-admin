@@ -21,6 +21,7 @@ import "./permission"; // permission control
 import "./utils/error-log"; // error log
 import "./plugins/fontawesome";
 import "./plugins/contextmenu";
+import "./plugins/mock";
 
 import * as filters from "./filters"; // global filters
 

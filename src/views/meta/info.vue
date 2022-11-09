@@ -36,12 +36,7 @@ export default {
               "allow-create": true,
             },
             on: {
-              focus: () => {
-                const $el = this.form.items[this.form.items.findIndex((v) => v.prop === "type")];
-                selectMetaCount({ type: "option", slug: "default", columns: ["name", "description"] }).then((res) => {
-                  $el.options = res.rows.map((v) => ({ ...v, value: v.name, label: v.description }));
-                });
-              },
+              focus: () => {},
             },
           },
           {
@@ -57,7 +52,12 @@ export default {
       },
     };
   },
-  created() {},
+  created() {
+    const $el = this.form.items[this.form.items.findIndex((v) => v.prop === "type")];
+    selectMetaCount({ type: "default", columns: ["slug", "name"] }).then((res) => {
+      $el.options = res.rows.map((v) => ({ ...v, value: v.slug, label: v.name }));
+    });
+  },
   methods: {
     handleBack() {
       this.$router.push({ path: "/meta/list" });

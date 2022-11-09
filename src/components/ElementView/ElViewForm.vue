@@ -37,10 +37,8 @@ export default {
   },
   computed: {},
   mounted() {
+    this.form.data = { ...this.form.data, ...this.$route.query };
     if (this.form.primary_keys.every((key) => this.$route.query[key])) {
-      this.form.primary_keys.forEach((key) => {
-        this.form.data[key] = this.$route.query[key];
-      });
       this.handleOperateSelectItem();
     }
   },
