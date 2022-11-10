@@ -1,6 +1,6 @@
 <script>
 import { getQuoteConfig, deleteQuoteList, selectQuoteList, selectQuoteCount } from "@/api/quote";
-import ElViewTable from "@/components/ElementView/ElViewTable.vue";
+import ElViewTable from "@/templates/ElViewTable";
 export default {
   name: "TypechoContentList",
   extends: ElViewTable,

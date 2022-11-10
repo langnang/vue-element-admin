@@ -1,6 +1,6 @@
 <script>
 import { insertContentItem, selectContentItem, updateContentItem } from "@/api/typecho";
-import ElViewForm from "@/components/ElementView/ElViewForm";
+import ElViewForm from "@/templates/ElViewForm";
 export default {
   extends: ElViewForm,
   data() {

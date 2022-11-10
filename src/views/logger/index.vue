@@ -1,7 +1,7 @@
 <script>
 import { selectLoggerList, selectLoggerCount } from "@/api/logger";
 import { selectMetaCount } from "@/api/meta";
-import ElViewTable from "@/components/ElementView/ElViewTable.vue";
+import ElViewTable from "@/templates/ElViewTable";
 import moment from "moment";
 import clipboard from "@/utils/clipboard";
 export default {

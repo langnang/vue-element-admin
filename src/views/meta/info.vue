@@ -1,6 +1,6 @@
 <script>
 import { getMetaConfig, insertMetaItem, selectMetaItem, updateMetaItem, selectMetaCount } from "@/api/meta";
-import ElViewForm from "@/components/ElementView/ElViewForm";
+import ElViewForm from "@/templates/ElViewForm";
 export default {
   extends: ElViewForm,
   data() {

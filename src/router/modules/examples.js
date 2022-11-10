@@ -9,6 +9,20 @@ export default {
   meta: { title: "组件示例", icon: "icon" },
   children: [
     {
+      path: "element-ui",
+      component: LayoutMain,
+      name: "Element-UI",
+      meta: { title: "Element-UI", icon: "icon", noCache: true },
+      children: [
+        {
+          path: "/upload",
+          component: () => import("@/examples/element-ui/upload"),
+          name: "Upload",
+          meta: { title: "Upload" },
+        },
+      ],
+    },
+    {
       path: "api-form",
       component: () => import("@/examples/api-form"),
       name: "ApiForm",

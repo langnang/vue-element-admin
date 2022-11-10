@@ -1,7 +1,7 @@
 <script>
 import { selectMetaCount } from "@/api/meta";
 import { insertContentItem, selectContentItem, updateContentItem } from "@/api/content";
-import ElViewForm from "@/components/ElementView/ElViewForm";
+import ElViewForm from "@/templates/ElViewForm";
 import jsonEditor from "@/components/JsonEditor";
 import ApiForm from "@/components/ApiForm";
 export default {

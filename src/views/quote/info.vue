@@ -1,6 +1,6 @@
 <script>
 import { getQuoteConfig, insertQuoteItem, selectQuoteItem, updateQuoteItem, selectQuoteCount } from "@/api/quote";
-import ElViewForm from "@/components/ElementView/ElViewForm";
+import ElViewForm from "@/templates/ElViewForm";
 export default {
   extends: ElViewForm,
   data() {

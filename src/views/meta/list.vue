@@ -1,6 +1,6 @@
 <script>
 import { getMetaConfig, deleteMetaList, selectMetaList, selectMetaCount } from "@/api/meta";
-import ElViewTable from "@/components/ElementView/ElViewTable.vue";
+import ElViewTable from "@/templates/ElViewTable";
 export default {
   name: "TypechoContentList",
   extends: ElViewTable,
@@ -9,8 +9,8 @@ export default {
       form: {
         primary_keys: ["mid"],
         upload: {
-          action: "http://localhost:9090/?/typecho/content/import",
-          accept: ".xlsx",
+          action: "/api/meta/upload",
+          accept: ".xls,.xlsx",
         },
       },
       list: {

@@ -1,7 +1,7 @@
 <script>
 import { deleteContentList, selectContentList } from "@/api/content";
 import { selectMetaCount } from "@/api/meta";
-import ElViewTable from "@/components/ElementView/ElViewTable.vue";
+import ElViewTable from "@/templates/ElViewTable";
 export default {
   name: "TypechoContentList",
   extends: ElViewTable,

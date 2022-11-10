@@ -1,7 +1,7 @@
 <script>
 import { deletePublicApiList, selectPublicApiList } from "@/api/public-api";
 import { selectMetaCount } from "@/api/meta";
-import ElViewTable from "@/components/ElementView/ElViewTable.vue";
+import ElViewTable from "@/templates/ElViewTable/index.vue";
 export default {
   extends: ElViewTable,
   data() {

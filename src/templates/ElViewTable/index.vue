@@ -67,8 +67,8 @@
           <el-button size="mini" type="primary" @click="handleGo('insertItem')">新增</el-button>
           <el-button size="mini" type="danger" :disabled="list.selection.length === 0" @click="handleOperateDeleteList">删除</el-button>
           <el-button size="mini" type="warning" :disabled="list.selection.length !== 1" @click="handleGo('updateItem')">修改</el-button>
-          <el-upload class="el-button el-button--text" disabled v-bind="form.upload" style="padding: 0; border: 0" @http-request="handleUploadHttpRequest">
-            <el-button size="mini" type="primary" disabled>导入</el-button>
+          <el-upload class="el-button el-button--text" accept=".xls,.xlsx" v-bind="form.upload" style="padding: 0; border: 0" @http-request="handleUploadHttpRequest">
+            <el-button size="mini" type="primary">导入</el-button>
           </el-upload>
           <el-button size="mini" type="warning" disabled>导出</el-button>
           <el-button size="mini" @click="handleBack">返回</el-button>
@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import mixin from "./mixins";
+import mixin from "@/templates/mixins";
 export default {
   name: "ElViewTable",
   mixins: [mixin],

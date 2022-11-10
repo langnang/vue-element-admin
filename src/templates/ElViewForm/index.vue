@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import mixin from "./mixins";
+import mixin from "@/templates/mixins";
 export default {
   name: "ElViewForm",
 
